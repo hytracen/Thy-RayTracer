@@ -9,6 +9,8 @@
 
 class Emissive : public Material{
 public:
+    explicit Emissive(std::shared_ptr<Texture> texture) : Material(texture) {}
+
     Vector3 BSDF(const Ray &in_ray, const Ray &out_ray, const Vector3 &n) override;
 
     bool IsScattered() const override;

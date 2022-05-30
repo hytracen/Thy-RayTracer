@@ -12,8 +12,7 @@
 class Hittable {
 public:
     virtual bool Hit(Ray in_ray, HitRec& hit_rec) = 0;
-    virtual Vector3 GetNormalAtPoint(Vector3 point) = 0;
-    virtual Vector3 ColorAtPoint(Vector3 point) = 0;
+    virtual Vector3 GetNormalAtPoint(const Vector3 &point) = 0;
 
     std::shared_ptr<Material> mat_;
 };

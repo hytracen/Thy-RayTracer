@@ -8,6 +8,7 @@
 #include "../Utils/vector3.h"
 
 class Texture {
+public:
     virtual Vector3 ColorAtTexel(float u, float v, const Vector3& n) = 0;
 };
 

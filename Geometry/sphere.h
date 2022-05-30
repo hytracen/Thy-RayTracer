@@ -5,8 +5,8 @@
 #ifndef RAYTRACER_SPHERE_H
 #define RAYTRACER_SPHERE_H
 
-#include "hittable.h"
-#include "Utils/vector3.h"
+#include "../hittable.h"
+#include "../Utils/vector3.h"
 
 class Sphere : public Hittable{
 public:
@@ -14,10 +14,7 @@ public:
         mat_ = mat;
     };
     bool Hit(Ray in_ray, HitRec &hit_rec) override;
-    Vector3 GetNormalAtPoint(Vector3 point) override;
-    Vector3 ColorAtPoint(Vector3 point) override {
-        return {0.f, 0.f, 0.f};
-    }
+    Vector3 GetNormalAtPoint(const Vector3 &point) override;
 
 private:
     Vector3 center_;

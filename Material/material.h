@@ -5,11 +5,15 @@
 #ifndef RAYTRACER_MATERIAL_H
 #define RAYTRACER_MATERIAL_H
 
+#include <memory>
+
 #include "../ray.h"
 #include "../hit_rec.h"
+#include "../Texture/texture.h"
 
 class Material {
 public:
+    explicit Material(std::shared_ptr<Texture> texture) : texture_(texture) {}
 
     /// 根据入射光线和出射光线的方向求材质的BSDF值
     /// \param in_ray 入射光线
@@ -19,6 +23,8 @@ public:
 
     virtual bool IsScattered() const = 0;
 
+public:
+    std::shared_ptr<Texture> texture_;
 };
 
 

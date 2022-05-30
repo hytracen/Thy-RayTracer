@@ -10,6 +10,7 @@
 
 struct HitRec {
     bool is_hit{};
+    float ray_t;
     Vector3 hit_pos;
     Vector3 color;
     Vector3 normal;

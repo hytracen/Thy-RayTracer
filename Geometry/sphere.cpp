@@ -9,7 +9,7 @@
 /// \param hit_rec 描述相交结果的结构体
 /// \return 是否相交
 bool Sphere::Hit(Ray in_ray, HitRec &hit_rec) {
-    if (fabsf(GetDistanceBetween2Points(in_ray.GetOrig(), center_) - radius_) <= 1.f) {
+    if (fabsf(GetDistanceBetween2Points(in_ray.GetOrig(), center_) - radius_) <= 0.1f) {
         hit_rec.is_hit = false;
         return false;
     }
@@ -41,11 +41,11 @@ bool Sphere::Hit(Ray in_ray, HitRec &hit_rec) {
 
     hit_rec.is_hit = true;
     hit_rec.hit_pos = in_ray.At(t);
-    hit_rec.color = ColorAtPoint(in_ray.At(t));
+    hit_rec.color = mat_->texture_->ColorAtTexel(0.f, 0.f, Vector3());
     hit_rec.normal = GetNormalAtPoint(hit_rec.hit_pos);
     return true;
 }
 
-Vector3 Sphere::GetNormalAtPoint(Vector3 point) {
+Vector3 Sphere::GetNormalAtPoint(const Vector3 &point) {
     return (point - center_).Normalize();
 }

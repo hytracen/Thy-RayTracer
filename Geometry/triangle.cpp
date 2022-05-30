@@ -1,0 +1,51 @@
+//
+// Created by Yoyotao on 2022/5/23.
+//
+
+#include "triangle.h"
+
+bool Triangle::Hit(Ray in_ray, HitRec &hit_rec) {
+    // Möller Trumbore Algorithm
+    Vector3 ab = vertexes_.at(0) - in_ray.GetOrig();
+    float distance = fabsf(ab.Dot(normal_)) / normal_.Length(); // 光线起点到平面的距离
+    if (distance <= 0.1f) return false;
+
+    Vector3 E_1 = vertexes_.at(1) - vertexes_.at(0);
+    Vector3 E_2 = vertexes_.at(2) - vertexes_.at(0);
+    Vector3 S = in_ray.GetOrig() - vertexes_.at(0);
+    Vector3 S_1 = in_ray.GetDir().Cross(E_2);
+    Vector3 S_2 = S.Cross(E_1);
+    float se_inv = 1.f / S_1.Dot(E_1);
+    float t = se_inv * S_2.Dot(E_2);
+    float b_1 = se_inv * S_1.Dot(S);
+    float b_2 = se_inv * S_2.Dot(in_ray.GetDir());
+    if (t >= 0 && (1 - b_1 - b_2) >= 0 && b_1 >=0 && b_2 >= 0) {
+        hit_rec.ray_t = t;
+        hit_rec.is_hit = true;
+        hit_rec.hit_pos = in_ray.At(t);
+        hit_rec.color = mat_->texture_->ColorAtTexel(0.f, 0.f, Vector3());
+        hit_rec.normal = GetNormalAtPoint({});
+        return true;
+    } else {
+        hit_rec.is_hit = false;
+        return false;
+    }
+}
+
+/**
+ * 三角形面积公式 : sqrt(s(s-a)(s-b)(s-c)), s = (a+b+c)/2
+ * @return 面积
+ */
+float Triangle::GetArea() {
+    float a = GetDistanceBetween2Points(vertexes_.at(0), vertexes_.at(1));
+    float b = GetDistanceBetween2Points(vertexes_.at(1), vertexes_.at(2));
+    float c = GetDistanceBetween2Points(vertexes_.at(2), vertexes_.at(0));
+
+    float s = (a + b + c) / 2;
+
+    return sqrtf(s * (s - a) * (s - b) * (s - c));
+}
+
+Vector3 Triangle::GetNormalAtPoint(const Vector3 &point) {
+    return normal_;
+}
