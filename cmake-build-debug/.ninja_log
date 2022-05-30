@@ -1,0 +1,18 @@
+# ninja log v5
+13	507	6755830936368268	CMakeFiles/RayTracer.dir/ray.cpp.obj	4332331ba8aac23b
+22	180	6753288665334467	CMakeFiles/RayTracer.dir/vector3.cpp.obj	c6616d40e1ecc7ac
+5	313	6755831175800380	CMakeFiles/RayTracer.dir/Material/emissive.cpp.obj	a832a83762528113
+113	578	6755830937098460	CMakeFiles/RayTracer.dir/Material/material.cpp.obj	a75f98045dd3583a
+86	218	6753301119849801	CMakeFiles/RayTracer.dir/material.cpp.obj	76c897fb9ac620f
+73	216	6755168758785272	CMakeFiles/RayTracer.dir/metal.cpp.obj	c370ea50f915ecb6
+30	620	6755830937538516	CMakeFiles/RayTracer.dir/light.cpp.obj	8c5ef63c7bd98096
+60	603	6755830937358475	CMakeFiles/RayTracer.dir/hittable.cpp.obj	69fded0879a14c5e
+70	642	6755830937758570	CMakeFiles/RayTracer.dir/triangle_light.cpp.obj	aceeab3353b65e1d
+4	754	6755835435432264	CMakeFiles/RayTracer.dir/main.cpp.obj	46824ecb6f17f489
+39	626	6755830937608534	CMakeFiles/RayTracer.dir/sphere.cpp.obj	9963ccf3619461b8
+755	1023	6755835438112932	RayTracer.exe	1c98d42cb9c1dde9
+3	219	6755842484119595	build.ninja	107bb32cf9f3bd13
+21	517	6755830936478301	CMakeFiles/RayTracer.dir/Utils/vector3.cpp.obj	722a77b52774bf04
+85	707	6755830938408709	CMakeFiles/RayTracer.dir/Utils/random_util.cpp.obj	f7016ff7d32a319e
+0	18	0	clean	15873e2816f39c89
+5	304	6755833016189954	CMakeFiles/RayTracer.dir/Material/metal.cpp.obj	83ae75809d1a5c18
