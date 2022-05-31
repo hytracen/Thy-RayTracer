@@ -15,9 +15,9 @@ public:
         mat_ = (material);
     }
 
-    bool Hit(Ray in_ray, HitRec &hit_rec) override;
+    bool Hit(const Ray &in_ray, HitRec &hit_rec) override;
 
-    Vector3 GetNormalAtPoint(const Vector3 &point) override;
+    Vector3 GetNormalAt(const Ray &in_ray, const Vector3 &point) override;
 
 private:
     std::array<Vector3, 8> vertexes_; // 顺时针，自上而下初始化

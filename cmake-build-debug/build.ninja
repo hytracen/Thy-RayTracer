@@ -145,6 +145,12 @@ build CMakeFiles/RayTracer.dir/Geometry/box.cpp.obj: CXX_COMPILER__RayTracer_Deb
   OBJECT_DIR = CMakeFiles\RayTracer.dir
   OBJECT_FILE_DIR = CMakeFiles\RayTracer.dir\Geometry
 
+build CMakeFiles/RayTracer.dir/world.cpp.obj: CXX_COMPILER__RayTracer_Debug D$:/Projects/ComputerGraphic/Learn/RayTracer/world.cpp || cmake_object_order_depends_target_RayTracer
+  DEP_FILE = CMakeFiles\RayTracer.dir\world.cpp.obj.d
+  FLAGS = -g
+  OBJECT_DIR = CMakeFiles\RayTracer.dir
+  OBJECT_FILE_DIR = CMakeFiles\RayTracer.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target RayTracer
@@ -153,7 +159,7 @@ build CMakeFiles/RayTracer.dir/Geometry/box.cpp.obj: CXX_COMPILER__RayTracer_Deb
 #############################################
 # Link the executable RayTracer.exe
 
-build RayTracer.exe: CXX_EXECUTABLE_LINKER__RayTracer_Debug CMakeFiles/RayTracer.dir/main.cpp.obj CMakeFiles/RayTracer.dir/ray.cpp.obj CMakeFiles/RayTracer.dir/Utils/vector3.cpp.obj CMakeFiles/RayTracer.dir/hittable.cpp.obj CMakeFiles/RayTracer.dir/Geometry/sphere.cpp.obj CMakeFiles/RayTracer.dir/Geometry/triangle.cpp.obj CMakeFiles/RayTracer.dir/Material/material.cpp.obj CMakeFiles/RayTracer.dir/Material/lambert.cpp.obj CMakeFiles/RayTracer.dir/Material/emissive.cpp.obj CMakeFiles/RayTracer.dir/Utils/random_util.cpp.obj CMakeFiles/RayTracer.dir/Texture/texture.cpp.obj CMakeFiles/RayTracer.dir/Texture/constant_texture.cpp.obj CMakeFiles/RayTracer.dir/Utils/pdf.cpp.obj CMakeFiles/RayTracer.dir/camera.cpp.obj CMakeFiles/RayTracer.dir/Geometry/plane.cpp.obj CMakeFiles/RayTracer.dir/Geometry/box.cpp.obj
+build RayTracer.exe: CXX_EXECUTABLE_LINKER__RayTracer_Debug CMakeFiles/RayTracer.dir/main.cpp.obj CMakeFiles/RayTracer.dir/ray.cpp.obj CMakeFiles/RayTracer.dir/Utils/vector3.cpp.obj CMakeFiles/RayTracer.dir/hittable.cpp.obj CMakeFiles/RayTracer.dir/Geometry/sphere.cpp.obj CMakeFiles/RayTracer.dir/Geometry/triangle.cpp.obj CMakeFiles/RayTracer.dir/Material/material.cpp.obj CMakeFiles/RayTracer.dir/Material/lambert.cpp.obj CMakeFiles/RayTracer.dir/Material/emissive.cpp.obj CMakeFiles/RayTracer.dir/Utils/random_util.cpp.obj CMakeFiles/RayTracer.dir/Texture/texture.cpp.obj CMakeFiles/RayTracer.dir/Texture/constant_texture.cpp.obj CMakeFiles/RayTracer.dir/Utils/pdf.cpp.obj CMakeFiles/RayTracer.dir/camera.cpp.obj CMakeFiles/RayTracer.dir/Geometry/plane.cpp.obj CMakeFiles/RayTracer.dir/Geometry/box.cpp.obj CMakeFiles/RayTracer.dir/world.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\RayTracer.dir

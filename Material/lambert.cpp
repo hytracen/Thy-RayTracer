@@ -18,7 +18,7 @@ Vector3 Lambert::BSDF(const Ray &in_ray, const Ray &out_ray, const Vector3 &n) {
 //    } else {
 //        return 0.f;
 //    }
-    return texture_->ColorAtTexel(0.f,0.f,n) / M_PI;
+    return texture_->AlbedoAtTexel(0.f, 0.f, n) / M_PI;
 }
 
 bool Lambert::IsScattered() const {

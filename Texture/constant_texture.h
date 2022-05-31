@@ -10,7 +10,7 @@
 class ConstantTexture : public Texture {
 public:
     explicit ConstantTexture(const Vector3 &const_color) : const_color_(const_color) {}
-    Vector3 ColorAtTexel(float u, float v, const Vector3 &n) override;
+    Vector3 AlbedoAtTexel(float u, float v, const Vector3 &n) override;
 
 private:
     Vector3 const_color_;

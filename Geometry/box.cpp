@@ -4,7 +4,7 @@
 
 #include "box.h"
 
-bool Box::Hit(Ray in_ray, HitRec &hit_rec) {
+bool Box::Hit(const Ray &in_ray, HitRec &hit_rec) {
     Plane p_u{{vertexes_.at(0), vertexes_.at(1), vertexes_.at(2), vertexes_.at(3)},
               (vertexes_.at(2) - vertexes_.at(0)).Cross(vertexes_.at(1) - vertexes_.at(3)).Normalize(), mat_};
     Plane p_d{{vertexes_.at(4), vertexes_.at(5), vertexes_.at(6), vertexes_.at(7)},
@@ -33,7 +33,7 @@ bool Box::Hit(Ray in_ray, HitRec &hit_rec) {
     return is_hit;
 }
 
-Vector3 Box::GetNormalAtPoint(const Vector3 &point) {
+Vector3 Box::GetNormalAt(const Ray &in_ray, const Vector3 &point) {
     // todo:盒体的表面法线
     return {};
 }

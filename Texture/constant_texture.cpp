@@ -4,6 +4,6 @@
 
 #include "constant_texture.h"
 
-Vector3 ConstantTexture::ColorAtTexel(float u, float v, const Vector3 &n) {
+Vector3 ConstantTexture::AlbedoAtTexel(float u, float v, const Vector3 &n) {
     return const_color_;
 }

@@ -13,14 +13,15 @@
 
 class Triangle : public Hittable {
 public:
-    explicit Triangle(std::array<Vector3, 3> vertexes, Vector3 normal, std::shared_ptr<Material> mat) : vertexes_(
+    explicit Triangle(std::array<Vector3, 3> vertexes, Vector3 normal, std::shared_ptr<Material> mat, bool is_2sided = true) : vertexes_(
             vertexes), normal_(normal.Normalize()) {
         mat_ = mat;
+        is_2sided_ = is_2sided;
     };
 
-    bool Hit(Ray in_ray, HitRec &hit_rec) override;
+    bool Hit(const Ray &in_ray, HitRec &hit_rec) override;
 
-    Vector3 GetNormalAtPoint(const Vector3 &point) override;
+    Vector3 GetNormalAt(const Ray &in_ray, const Vector3 &point) override;
 
     float GetArea();
 

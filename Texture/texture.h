@@ -9,7 +9,7 @@
 
 class Texture {
 public:
-    virtual Vector3 ColorAtTexel(float u, float v, const Vector3& n) = 0;
+    virtual Vector3 AlbedoAtTexel(float u, float v, const Vector3& n) = 0;
 };
 
 

@@ -4,11 +4,11 @@
 
 #include "triangle.h"
 
-bool Triangle::Hit(Ray in_ray, HitRec &hit_rec) {
+bool Triangle::Hit(const Ray &in_ray, HitRec &hit_rec) {
     // Möller Trumbore Algorithm
     Vector3 ab = vertexes_.at(0) - in_ray.GetOrig();
     float distance = fabsf(ab.Dot(normal_)) / normal_.Length(); // 光线起点到平面的距离
-    if (distance <= 0.1f) return false;
+    if (distance <= 0.1f) return false; // 避免将反射出的光线判定为相交
 
     Vector3 E_1 = vertexes_.at(1) - vertexes_.at(0);
     Vector3 E_2 = vertexes_.at(2) - vertexes_.at(0);
@@ -19,12 +19,12 @@ bool Triangle::Hit(Ray in_ray, HitRec &hit_rec) {
     float t = se_inv * S_2.Dot(E_2);
     float b_1 = se_inv * S_1.Dot(S);
     float b_2 = se_inv * S_2.Dot(in_ray.GetDir());
-    if (t >= 0 && (1 - b_1 - b_2) >= 0 && b_1 >=0 && b_2 >= 0) {
+    if (t >= 0.f && (1 - b_1 - b_2) >= 0.f && b_1 >= 0.f && b_2 >= 0.f) {
         hit_rec.ray_t = t;
         hit_rec.is_hit = true;
         hit_rec.hit_pos = in_ray.At(t);
-        hit_rec.color = mat_->texture_->ColorAtTexel(0.f, 0.f, Vector3());
-        hit_rec.normal = GetNormalAtPoint({});
+        hit_rec.color = mat_->texture_->AlbedoAtTexel(0.f, 0.f, Vector3());
+        hit_rec.normal = GetNormalAt(in_ray, {});
         return true;
     } else {
         hit_rec.is_hit = false;
@@ -46,6 +46,14 @@ float Triangle::GetArea() {
     return sqrtf(s * (s - a) * (s - b) * (s - c));
 }
 
-Vector3 Triangle::GetNormalAtPoint(const Vector3 &point) {
-    return normal_;
+Vector3 Triangle::GetNormalAt(const Ray &in_ray, const Vector3 &point) {
+    if (is_2sided_) {
+        if (in_ray.GetDir().Dot(normal_) >= 0.f) {
+            return -normal_;
+        } else {
+            return normal_;
+        }
+    } else {
+        return normal_;
+    }
 }

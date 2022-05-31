@@ -46,6 +46,7 @@ private:
 
 Vector3 operator+ (Vector3 v1, Vector3 v2);
 Vector3 operator* (float t, Vector3 v);
+Vector3 operator* (Vector3 v, float t);
 Vector3 operator/ (Vector3 v1, float t);
 Vector3 operator- (Vector3 v1, Vector3 v2);
 Vector3 operator- (Vector3 v);

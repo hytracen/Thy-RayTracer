@@ -29,6 +29,10 @@ Vector3 operator*(float t, Vector3 v) {
     return {t * v.X(), t * v.Y(), t * v.Z()};
 }
 
+Vector3 operator* (Vector3 v, float t) {
+    return t * v;
+}
+
 Vector3 operator/(Vector3 v1, float t) {
     return (1 / t) * v1;
 }
@@ -42,7 +46,7 @@ Vector3 operator-(Vector3 v) {
 }
 
 std::ostream & operator<<(std::ostream &os, const Vector3 &v) {
-    os << "{ " << v.X() << ", " << v.Y() << ", " << v.Z() << "}" << std::endl;
+    os << "{ " << v.X() << ", " << v.Y() << ", " << v.Z() << "}";
     return os;
 }
 
@@ -56,10 +60,10 @@ float CosThetaOf2Vec(Vector3 v1, Vector3 v2) {
 
 Vector3 LocalToWorld(Vector3 v_loc, Vector3 w) {
     Vector3 a;
-    if (GetDistanceBetween2Points(w, Vector3(1, 0, 0)) <= 0.1f) {
-        a = {0, 1, 0};
-    } else {
-        a = {1, 0, 0};
+    if (1.f - fabsf(CosThetaOf2Vec(w, {1.f, 0.f, 0.f})) <= 0.1f) { // 和x轴几乎重合
+        a = {0.f, 1.f, 0.f};
+    } else { // 和x轴不重合
+        a = {1.f, 0.f, 0.f};
     }
     Vector3 u = w.Cross(a).Normalize(); // w和a的夹角并非90度，因此叉乘结果的模不为1，需要进行归一化
     Vector3 v = w.Cross(u);
