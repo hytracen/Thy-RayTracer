@@ -11,7 +11,7 @@
 #include "Utils/random_util.h"
 #include "Utils/pdf.h"
 
-const float kRR = 0.6f; // 俄罗斯轮盘赌
+const float kRR = 0.8f; // 俄罗斯轮盘赌
 
 enum class HittableType {
     kNormal,
