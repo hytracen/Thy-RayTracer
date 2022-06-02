@@ -14,47 +14,69 @@ void World::Add(Hittable *hittable, HittableType hittable_type) {
     }
 }
 
-Vector3 World::CastRay(const Ray &in_ray, int depth) {
+Vector3 World::Shade(const Ray &in_ray, int depth) {
     if (depth <= 0) return {}; // 达到最大递归深度，递归结束
 
-    for (auto *hittable: hittable_list_) {
-        HitRec hit_rec;
-        if (hittable->Hit(in_ray, hit_rec)) { // 光线击中物体
-            if ((!hittable->is_2sided_) && in_ray.GetDir().Dot(hit_rec.normal) > 0.f) // 物体为单面且光线击中物体背面
-                return {};
-            if (!hittable->mat_->IsScattered()) // 击中光源时，直接返回光源的颜色
-                return hit_rec.color;
+    HitRec hit_rec;
+    if (CastRay(in_ray, hit_rec)) {
+        Hittable* hit_obj = hit_rec.hit_object;
 
-            // 直接光照计算
-            Vector3 r_dir;
+        if ((!hit_obj->is_2sided_) && in_ray.GetDir().Dot(hit_rec.normal) > 0.f) // 物体为单面且光线击中物体背面
+            return {};
+        if (!hit_obj->mat_->IsScattered()) // 击中光源时，直接返回光源的颜色
+            return hit_rec.color;
 
-            for (auto light: light_list_) {
-                float x = RandomUtil::GetUniformFloat(213.f, 343.f);
-                float y = RandomUtil::GetUniformFloat(227.f, 332.f);
-                float z = 554.f;
-                float dis = GetDistanceBetween2Points({x, y, z}, hit_rec.hit_pos);
-                Ray ray_light{hit_rec.hit_pos, (Vector3{x, y, z} - hit_rec.hit_pos).Normalize()};
-                if (light->is_2sided_ || ray_light.GetDir().Dot(light->GetNormalAt(in_ray, {})) < 0.f) {
-                    r_dir += hittable->mat_->BSDF(in_ray, ray_light, hit_rec.normal) * Vector3{15.f, 15.f, 15.f}
-                             * ray_light.GetDir().Dot(hit_rec.normal) *
-                             (-ray_light.GetDir()).Dot(light->GetNormalAt(in_ray, {}))
-                             / powf(dis, 2) / Pdf::GetUniAreaVal(13650.f);
-                }
+        // 直接光照计算
+        Vector3 r_dir;
+
+        for (auto light: light_list_) {
+            if (!light->is_2sided_ && hit_rec.normal.Dot(light->GetNormalAt(in_ray, {})) > 0.f) continue;
+            float x = RandomUtil::GetUniformFloat(213.f, 343.f);
+            float y = RandomUtil::GetUniformFloat(227.f, 332.f);
+            float z = 554.f;
+            float dis = GetDistanceBetween2Points({x, y, z}, hit_rec.hit_pos);
+            Ray ray2light{hit_rec.hit_pos, (Vector3{x, y, z} - hit_rec.hit_pos).Normalize()};
+            HitRec light_hit_rec;
+            CastRay(ray2light, light_hit_rec);
+            // 如果中间没有其他物体阻挡
+            if (dis - GetDistanceBetween2Points(hit_rec.hit_pos, light_hit_rec.hit_pos) < 0.01f) {
+                r_dir += hit_obj->mat_->BSDF(in_ray, ray2light, hit_rec.normal) * Vector3{15.f, 15.f, 15.f}
+                         * ray2light.GetDir().Dot(hit_rec.normal) *
+                         (-ray2light.GetDir()).Dot(light->GetNormalAt(ray2light, {}))
+                         / powf(dis, 2) / Pdf::GetUniAreaPdf(13650.f);
             }
+        }
 
-            // 间接光照计算
-            Vector3 r_indir;
-            float p = RandomUtil::GetUniformFloat(0.f, 1.f);
-            if (p < kRR) {
-                Ray scattered_ray;
-                scattered_ray.SetOrig(hit_rec.hit_pos);
-                scattered_ray.SetDir(LocalToWorld(RandomUtil::GetRandomPointOnHemisphere(), hit_rec.normal));
-                r_indir = (scattered_ray.GetDir()).Dot(hit_rec.normal) *
-                          hittable->mat_->BSDF(in_ray, scattered_ray, hit_rec.normal) *
-                          CastRay(scattered_ray, depth - 1) / Pdf::GetUniHemiVal() / kRR;
+        // 间接光照计算
+        Vector3 r_indir;
+        float p = RandomUtil::GetUniformFloat(0.f, 1.f);
+        if (p < kRR) {
+            Ray scattered_ray;
+            scattered_ray.SetOrig(hit_rec.hit_pos);
+            scattered_ray.SetDir(LocalToWorld(RandomUtil::SampleCosine(), hit_rec.normal));
+            r_indir = (scattered_ray.GetDir()).Dot(hit_rec.normal) *
+                      hit_obj->mat_->BSDF(in_ray, scattered_ray, hit_rec.normal) *
+                      Shade(scattered_ray, depth - 1) / Pdf::GetCosineHemiPdf(scattered_ray.GetDir(), hit_rec.normal)/ kRR;
+        }
+        return r_dir + r_indir;
+    } else {
+        return {};
+    }
+}
+
+bool World::CastRay(const Ray &in_ray, HitRec &hit_rec) {
+    float t = std::numeric_limits<float>::max();
+    bool is_hit = false;
+    HitRec temp_hit_rec;
+    for (auto hittable: hittable_list_) {
+        if (hittable->Hit(in_ray, temp_hit_rec)) {
+            is_hit = true;
+            if (temp_hit_rec.ray_t < t) {
+                hit_rec = temp_hit_rec;
+                hit_rec.hit_object = hittable;
+                t = hit_rec.ray_t;
             }
-            return r_dir + r_indir;
         }
     }
-    return {};
+    return is_hit;
 }

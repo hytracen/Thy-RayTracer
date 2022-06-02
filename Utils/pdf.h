@@ -9,11 +9,15 @@
 
 class Pdf {
 public:
-    // 在半球上进行均匀采样
-    static float GetUniHemiVal() { return 1 / (2 * M_PI); }
+    // 在半球上进行均匀采样的PDF
+    static float GetUniHemiPdf() { return 1 / (2 * M_PI); }
 
-    // 对面积进行均匀采样
-    static float GetUniAreaVal(float a) { return 1 / a; }
+    static float GetCosineHemiPdf(const Vector3 &out_dir, const Vector3 &n) {
+        return CosThetaOf2Vec(out_dir, n) / kFloatPi;
+    }
+
+    // 对面积进行均匀采样的PDF
+    static float GetUniAreaPdf(float a) { return 1 / a; }
 };
 
 

@@ -10,8 +10,8 @@
 #include "hittable.h"
 #include "Utils/random_util.h"
 #include "Utils/pdf.h"
+#include "Utils/constant_value.h"
 
-const float kRR = 0.8f; // 俄罗斯轮盘赌
 
 enum class HittableType {
     kNormal,
@@ -21,7 +21,8 @@ enum class HittableType {
 class World {
 public:
     void Add(Hittable* hittable, HittableType hittable_type = HittableType::kNormal);
-    Vector3 CastRay(const Ray &in_ray, int depth);
+    Vector3 Shade(const Ray &in_ray, int depth);
+    bool CastRay(const Ray &in_ray, HitRec &hit_rec);
 private:
     std::vector<Hittable*> hittable_list_;
     std::vector<Hittable*> light_list_;

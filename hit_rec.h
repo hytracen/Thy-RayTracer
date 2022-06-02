@@ -8,12 +8,15 @@
 #include "Utils/vector3.h"
 #include "ray.h"
 
+class Hittable;
+
 struct HitRec {
     bool is_hit{};
     float ray_t;
     Vector3 hit_pos;
     Vector3 color;
     Vector3 normal;
+    Hittable* hit_object;
 };
 
 #endif //RAYTRACER_HIT_REC_H

@@ -54,7 +54,7 @@ float GetDistanceBetween2Points(Vector3 v1, Vector3 v2) {
     return sqrtf(powf(v1.X() - v2.X(), 2) + powf(v1.Y() - v2.Y(), 2) + powf(v1.Z() - v2.Z(), 2));
 }
 
-float CosThetaOf2Vec(Vector3 v1, Vector3 v2) {
+float CosThetaOf2Vec(const Vector3 &v1, const Vector3 &v2) {
     return v1.Dot(v2) / (v1.Length() * v2.Length());
 }
 
@@ -69,4 +69,8 @@ Vector3 LocalToWorld(Vector3 v_loc, Vector3 w) {
     Vector3 v = w.Cross(u);
 
     return v_loc.X() * u + v_loc.Y() * v + v_loc.Z() * w;
+}
+
+bool IsNearZero(float f) {
+    return fabsf(f) < kEpsilon;
 }

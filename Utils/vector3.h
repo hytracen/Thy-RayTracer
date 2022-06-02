@@ -9,6 +9,8 @@
 #include <limits>
 #include <iostream>
 
+#include "constant_value.h"
+
 class Vector3 {
 public:
     Vector3() : x_(0.f),y_(0.f),z_(0.f){};
@@ -58,7 +60,7 @@ std::ostream & operator<<(std::ostream &os, const Vector3 &v);
  * @param v2
  * @return
  */
-float CosThetaOf2Vec(Vector3 v1, Vector3 v2);
+float CosThetaOf2Vec(const Vector3 &v1, const Vector3 &v2);
 
 // 计算两点间的距离
 float GetDistanceBetween2Points (Vector3 v1, Vector3 v2);
@@ -78,5 +80,10 @@ void RotateAroundAxis(Vector3 &v, Vector3 n, float angle);
  * @return 转换后的向量
  */
 Vector3 LocalToWorld(Vector3 v, Vector3 n);
+
+/**
+ * 判断浮点数是否为0
+ */
+bool IsNearZero(float f);
 
 #endif //RAYTRACER_VECTOR3_H

@@ -43,6 +43,7 @@ bool Sphere::Hit(const Ray &in_ray, HitRec &hit_rec) {
     hit_rec.hit_pos = in_ray.At(t);
     hit_rec.color = mat_->texture_->AlbedoAtTexel(0.f, 0.f, Vector3());
     hit_rec.normal = GetNormalAt(in_ray, hit_rec.hit_pos);
+    hit_rec.hit_object = this;
     return true;
 }
 

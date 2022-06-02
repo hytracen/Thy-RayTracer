@@ -1,4 +1,0 @@
-"D:\Program Files (x86)\apps\CLion\ch-0\221.5080.224\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=D:/Program Files (x86)/apps/CLion/ch-0/221.5080.224/bin/ninja/win/ninja.exe" -G Ninja -S D:\Projects\ComputerGraphic\Learn\RayTracer -B D:\Projects\ComputerGraphic\Learn\RayTracer\cmake-build-debug
--- Configuring done
--- Generating done
--- Build files have been written to: D:/Projects/ComputerGraphic/Learn/RayTracer/cmake-build-debug
