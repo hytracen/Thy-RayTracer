@@ -10,11 +10,12 @@
 #include "../ray.h"
 #include "../hit_rec.h"
 #include "../Texture/texture.h"
+#include "../Texture/constant_texture.h"
 
 class Material {
 public:
+    // todo: pass by value and use std::move
     explicit Material(std::shared_ptr<Texture> texture) : texture_(texture) {}
-
     /// 根据入射光线和出射光线的方向求材质的BSDF值
     /// \param in_ray 入射光线
     /// \param out_ray 出射光线

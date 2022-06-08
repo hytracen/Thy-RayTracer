@@ -18,7 +18,7 @@ Ray Camera::GetRay(int pixel_idx, int pixel_idy) const {
 
     // 再进行基底的变换，即旋转操作
     Vector3 local_dir{pixel_x, pixel_y, pixel_z};
-    Vector3 dir = local_dir.X() * u_ + local_dir.Y() * v_ + local_dir.Z() * w_;
+    Vector3 dir = local_dir.GetX() * u_ + local_dir.GetY() * v_ + local_dir.GetZ() * w_;
 
     return {orig, dir};
 }

@@ -7,7 +7,7 @@
 
 const int kWidth = 600;
 const int kHeight = 600;
-const int kSamplesPerPixel = 100;
+const int kSamplesPerPixel = 50;
 const int kDepth = 5;
 const float kFieldOfView = 20.f; // kFieldOfView = Alpha / 2
 const float kRR = 0.8f; // 俄罗斯轮盘赌

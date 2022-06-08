@@ -13,20 +13,24 @@ float Vector3::Length() const {
 }
 
 Vector3 Vector3::Cross(Vector3 v) const {
-    return Vector3{this->Y() * v.Z() - this->Z() * v.Y(), this->Z() * v.X() - this->X() * v.Z(),
-                   this->X() * v.Y() - this->Y() * v.X()};
+    return Vector3{this->GetY() * v.GetZ() - this->GetZ() * v.GetY(), this->GetZ() * v.GetX() - this->GetX() * v.GetZ(),
+                   this->GetX() * v.GetY() - this->GetY() * v.GetX()};
 }
 
 float Vector3::Dot(Vector3 v) const {
-    return this->X() * v.X() + this->Y() * v.Y() + this->Z() * v.Z();
+    return this->GetX() * v.GetX() + this->GetY() * v.GetY() + this->GetZ() * v.GetZ();
+}
+
+Vector3 Vector3::Inv() const {
+    return {1.f / x_, 1.f / y_, 1.f / z_};
 }
 
 Vector3 operator+(Vector3 v1, Vector3 v2) {
-    return {v1.X() + v2.X(), v1.Y() + v2.Y(), v1.Z() + v2.Z()};
+    return {v1.GetX() + v2.GetX(), v1.GetY() + v2.GetY(), v1.GetZ() + v2.GetZ()};
 }
 
 Vector3 operator*(float t, Vector3 v) {
-    return {t * v.X(), t * v.Y(), t * v.Z()};
+    return {t * v.GetX(), t * v.GetY(), t * v.GetZ()};
 }
 
 Vector3 operator* (Vector3 v, float t) {
@@ -38,20 +42,20 @@ Vector3 operator/(Vector3 v1, float t) {
 }
 
 Vector3 operator-(Vector3 v1, Vector3 v2) {
-    return {v1.X() - v2.X(), v1.Y() - v2.Y(), v1.Z() - v2.Z()};
+    return {v1.GetX() - v2.GetX(), v1.GetY() - v2.GetY(), v1.GetZ() - v2.GetZ()};
 }
 
 Vector3 operator-(Vector3 v) {
-    return {-v.X(), -v.Y(), -v.Z()};
+    return {-v.GetX(), -v.GetY(), -v.GetZ()};
 }
 
 std::ostream & operator<<(std::ostream &os, const Vector3 &v) {
-    os << "{ " << v.X() << ", " << v.Y() << ", " << v.Z() << "}";
+    os << "{ " << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << "}";
     return os;
 }
 
 float GetDistanceBetween2Points(Vector3 v1, Vector3 v2) {
-    return sqrtf(powf(v1.X() - v2.X(), 2) + powf(v1.Y() - v2.Y(), 2) + powf(v1.Z() - v2.Z(), 2));
+    return sqrtf(powf(v1.GetX() - v2.GetX(), 2) + powf(v1.GetY() - v2.GetY(), 2) + powf(v1.GetZ() - v2.GetZ(), 2));
 }
 
 float CosThetaOf2Vec(const Vector3 &v1, const Vector3 &v2) {
@@ -68,7 +72,7 @@ Vector3 LocalToWorld(Vector3 v_loc, Vector3 w) {
     Vector3 u = w.Cross(a).Normalize(); // w和a的夹角并非90度，因此叉乘结果的模不为1，需要进行归一化
     Vector3 v = w.Cross(u);
 
-    return v_loc.X() * u + v_loc.Y() * v + v_loc.Z() * w;
+    return v_loc.GetX() * u + v_loc.GetY() * v + v_loc.GetZ() * w;
 }
 
 bool IsNearZero(float f) {

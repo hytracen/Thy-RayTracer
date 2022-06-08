@@ -5,6 +5,8 @@
 #ifndef RAYTRACER_NUMERIC_H
 #define RAYTRACER_NUMERIC_H
 
+#include <numeric>
+#include <cfloat>
 
 class Numeric {
 public:

@@ -13,29 +13,44 @@
 
 class Vector3 {
 public:
-    Vector3() : x_(0.f),y_(0.f),z_(0.f){};
-    Vector3(float x, float y, float z) : x_(x),y_(y),z_(z){};
-    float X() const {return x_;}
-    float Y() const {return y_;}
-    float Z() const {return z_;}
+    Vector3() : x_(0.f), y_(0.f), z_(0.f) {};
+
+    Vector3(float x, float y, float z) : x_(x), y_(y), z_(z) {};
+
+    float GetX() const { return x_; }
+
+    float GetY() const { return y_; }
+
+    float GetZ() const { return z_; }
+
+    void SetX(float x) { x_ = x; }
+
+    void SetY(float y) { y_ = y; }
+
+    void SetZ(float z) { z_ = z; }
 
     Vector3 Normalize() const;
+
     float Length() const;
+
+    Vector3 Inv() const;
+
     Vector3 Cross(Vector3 v) const;
+
     float Dot(Vector3 v) const;
 
-    Vector3 operator* (Vector3 v) const {
-        return {X() * v.X(), Y() * v.Y(), Z() * v.Z()};
+    Vector3 operator*(Vector3 v) const {
+        return {GetX() * v.GetX(), GetY() * v.GetY(), GetZ() * v.GetZ()};
     }
 
-    Vector3& operator+= (Vector3 v) {
-        this->x_ += v.X();
-        this->y_ += v.Y();
-        this->z_ += v.Z();
+    Vector3 &operator+=(Vector3 v) {
+        this->x_ += v.GetX();
+        this->y_ += v.GetY();
+        this->z_ += v.GetZ();
         return *this;
     }
 
-    Vector3& operator/= (float t) {
+    Vector3 &operator/=(float t) {
         this->x_ /= t;
         this->y_ /= t;
         this->z_ /= t;
@@ -46,13 +61,19 @@ private:
     float x_ = 0.f, y_ = 0.f, z_ = 0.f;
 };
 
-Vector3 operator+ (Vector3 v1, Vector3 v2);
-Vector3 operator* (float t, Vector3 v);
-Vector3 operator* (Vector3 v, float t);
-Vector3 operator/ (Vector3 v1, float t);
-Vector3 operator- (Vector3 v1, Vector3 v2);
-Vector3 operator- (Vector3 v);
-std::ostream & operator<<(std::ostream &os, const Vector3 &v);
+Vector3 operator+(Vector3 v1, Vector3 v2);
+
+Vector3 operator*(float t, Vector3 v);
+
+Vector3 operator*(Vector3 v, float t);
+
+Vector3 operator/(Vector3 v1, float t);
+
+Vector3 operator-(Vector3 v1, Vector3 v2);
+
+Vector3 operator-(Vector3 v);
+
+std::ostream &operator<<(std::ostream &os, const Vector3 &v);
 
 /**
  * 计算两个向量夹角的余弦值
@@ -63,7 +84,7 @@ std::ostream & operator<<(std::ostream &os, const Vector3 &v);
 float CosThetaOf2Vec(const Vector3 &v1, const Vector3 &v2);
 
 // 计算两点间的距离
-float GetDistanceBetween2Points (Vector3 v1, Vector3 v2);
+float GetDistanceBetween2Points(Vector3 v1, Vector3 v2);
 
 /**
  * 将一个向量绕轴旋转给定的角度

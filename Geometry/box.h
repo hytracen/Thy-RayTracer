@@ -8,12 +8,14 @@
 #include "../hittable.h"
 #include "plane.h"
 
-class Box : public Hittable{
+class Box : public Hittable {
 public:
     // 顶点数组的顺序为顺时针，自上而下
-    Box(std::array<Vector3, 8> vertexes, std::shared_ptr<Material> material, bool is_2sided = true) : vertexes_(vertexes) {
+    Box(std::array<Vector3, 8> vertexes, std::shared_ptr<Material> material,
+        HittableAttrib hittable_attrib = HittableAttrib())
+            : vertexes_(vertexes) {
         mat_ = (material);
-        is_2sided_ = is_2sided;
+        hittable_attrib_ = hittable_attrib;
     }
 
     bool Hit(const Ray &in_ray, HitRec &hit_rec) override;

@@ -4,40 +4,46 @@
 
 #include "world.h"
 
-void World::Add(Hittable *hittable, HittableType hittable_type) {
-    switch (hittable_type) {
+void World::Add(Hittable *hittable) {
+    switch (hittable->hittable_attrib_.type_) {
         case HittableType::kLight:
-            light_list_.push_back(hittable); // 此处不加break, 确保总是将hittable添加至hittable_list中
+            light_list_.push_back(hittable);
+            break;
         case HittableType::kNormal:
-            hittable_list_.push_back(hittable);
+            // todo: 重写triangle
             break;
     }
+    std::vector<Triangle*> tri_list = hittable->GetTriList();
+    tri_list_.insert(tri_list_.end(), tri_list.begin(), tri_list.end());
+    hittable_list_.push_back(hittable);
 }
 
 Vector3 World::Shade(const Ray &in_ray, int depth) {
     if (depth <= 0) return {}; // 达到最大递归深度，递归结束
 
     HitRec hit_rec;
-    if (CastRay(in_ray, hit_rec)) {
+//    if (CastRay(in_ray, hit_rec, hittable_list_)) {
+    if ((hit_rec = bvh_tree_->Hit(in_ray)).is_hit) {
         Hittable* hit_obj = hit_rec.hit_object;
 
-        if ((!hit_obj->is_2sided_) && in_ray.GetDir().Dot(hit_rec.normal) > 0.f) // 物体为单面且光线击中物体背面
+        if ((!hit_obj->hittable_attrib_.is_2sided_) && in_ray.GetDir().Dot(hit_rec.normal) > 0.f) // 物体为单面且光线击中物体背面
             return {};
         if (!hit_obj->mat_->IsScattered()) // 击中光源时，直接返回光源的颜色
             return hit_rec.color;
 
         // 直接光照计算
         Vector3 r_dir;
-
         for (auto light: light_list_) {
-            if (!light->is_2sided_ && hit_rec.normal.Dot(light->GetNormalAt(in_ray, {})) > 0.f) continue;
+            if (!light->hittable_attrib_.is_2sided_ && hit_rec.normal.Dot(light->GetNormalAt(in_ray, {})) > 0.f) continue;
             float x = RandomUtil::GetUniformFloat(213.f, 343.f);
             float y = RandomUtil::GetUniformFloat(227.f, 332.f);
             float z = 554.f;
             float dis = GetDistanceBetween2Points({x, y, z}, hit_rec.hit_pos);
+            // todo: 根据光源的位置和形状进行采样
             Ray ray2light{hit_rec.hit_pos, (Vector3{x, y, z} - hit_rec.hit_pos).Normalize()};
             HitRec light_hit_rec;
-            CastRay(ray2light, light_hit_rec);
+//            CastRay(ray2light, light_hit_rec, hittable_list_);
+            light_hit_rec = bvh_tree_->Hit(ray2light);
             // 如果中间没有其他物体阻挡
             if (dis - GetDistanceBetween2Points(hit_rec.hit_pos, light_hit_rec.hit_pos) < 0.01f) {
                 r_dir += hit_obj->mat_->BSDF(in_ray, ray2light, hit_rec.normal) * Vector3{15.f, 15.f, 15.f}
@@ -64,11 +70,11 @@ Vector3 World::Shade(const Ray &in_ray, int depth) {
     }
 }
 
-bool World::CastRay(const Ray &in_ray, HitRec &hit_rec) {
-    float t = std::numeric_limits<float>::max();
+bool CastRay(const Ray &in_ray, HitRec &hit_rec, const std::vector<Hittable*>& hittable_list) {
+    float t = FLT_MAX;
     bool is_hit = false;
     HitRec temp_hit_rec;
-    for (auto hittable: hittable_list_) {
+    for (auto hittable: hittable_list) {
         if (hittable->Hit(in_ray, temp_hit_rec)) {
             is_hit = true;
             if (temp_hit_rec.ray_t < t) {

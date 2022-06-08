@@ -12,6 +12,7 @@ class Lambert : public Material{
 public:
     //todo:简化构造函数，可以直接通过Vector3进行初始化
     explicit Lambert(std::shared_ptr<Texture> texture) : Material(texture) {}
+    explicit Lambert(const Vector3 &albedo) : Material(std::make_shared<ConstantTexture>(albedo)) {}
 
     Vector3 BSDF(const Ray &in_ray, const Ray &out_ray, const Vector3 &n) override;
 

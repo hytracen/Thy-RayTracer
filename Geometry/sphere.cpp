@@ -13,9 +13,9 @@ bool Sphere::Hit(const Ray &in_ray, HitRec &hit_rec) {
         hit_rec.is_hit = false;
         return false;
     }
-    float c_x = center_.X(), c_y = center_.Y(), c_z = center_.Z(); // sphere的center坐标
-    float o_x = in_ray.GetOrig().X(), o_y = in_ray.GetOrig().Y(), o_z = in_ray.GetOrig().Z(); // ray的起点坐标
-    float d_x = in_ray.GetDir().X(), d_y = in_ray.GetDir().Y(), d_z = in_ray.GetDir().Z(); // ray的方向
+    float c_x = center_.GetX(), c_y = center_.GetY(), c_z = center_.GetZ(); // sphere的center坐标
+    float o_x = in_ray.GetOrig().GetX(), o_y = in_ray.GetOrig().GetY(), o_z = in_ray.GetOrig().GetZ(); // ray的起点坐标
+    float d_x = in_ray.GetDir().GetX(), d_y = in_ray.GetDir().GetY(), d_z = in_ray.GetDir().GetZ(); // ray的方向
     float a = powf(d_x, 2) + powf(d_y, 2) + powf(d_z, 2);
     float b = 2 * (d_x * (o_x - c_x) + d_y * (o_y - c_y) + d_z * (o_z - c_z));
     float c = powf((o_x - c_x), 2) + powf((o_y - c_y), 2) + powf((o_z - c_z), 2) - powf(radius_, 2);

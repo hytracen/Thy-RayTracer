@@ -7,9 +7,6 @@
 bool Triangle::Hit(const Ray &in_ray, HitRec &hit_rec) {
     // Möller Trumbore Algorithm
 
-    if (!is_2sided_ && in_ray.GetDir().Dot(GetNormalAt(in_ray, {})) > 0.f)
-        return false;
-
     Vector3 E_1 = vertexes_.at(1) - vertexes_.at(0);
     Vector3 E_2 = vertexes_.at(2) - vertexes_.at(0);
     Vector3 S = in_ray.GetOrig() - vertexes_.at(0);
@@ -24,7 +21,7 @@ bool Triangle::Hit(const Ray &in_ray, HitRec &hit_rec) {
     float t = se_inv * S_2.Dot(E_2);
     float b_1 = se_inv * S_1.Dot(S);
     float b_2 = se_inv * S_2.Dot(in_ray.GetDir());
-    if (t > 0.1f && (1 - b_1 - b_2) > 0.f && b_1 > 0.f && b_2 > 0.f) {
+    if (t > 0.f && (1 - b_1 - b_2) > 0.f && b_1 > 0.f && b_2 > 0.f) {
         hit_rec.ray_t = t;
         hit_rec.is_hit = true;
         hit_rec.hit_pos = in_ray.At(t);
@@ -53,7 +50,7 @@ float Triangle::GetArea() {
 }
 
 Vector3 Triangle::GetNormalAt(const Ray &in_ray, const Vector3 &point) {
-    if (is_2sided_) { // 让法线方向总是against光线方向
+    if (hittable_attrib_.is_2sided_) { // 让法线方向总是against光线方向
         if (in_ray.GetDir().Dot(normal_) >= 0.f) {
             return -normal_;
         } else {
@@ -62,4 +59,8 @@ Vector3 Triangle::GetNormalAt(const Ray &in_ray, const Vector3 &point) {
     } else {
         return normal_;
     }
+}
+
+std::vector<Triangle *> Triangle::GetTriList() {
+    return {this};
 }

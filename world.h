@@ -11,22 +11,28 @@
 #include "Utils/random_util.h"
 #include "Utils/pdf.h"
 #include "Utils/constant_value.h"
-
-
-enum class HittableType {
-    kNormal,
-    kLight
-};
+#include "Geometry/triangle.h"
+#include "bvh_tree.h"
 
 class World {
 public:
-    void Add(Hittable* hittable, HittableType hittable_type = HittableType::kNormal);
+    void Add(Hittable* hittable);
+
+    void BuildBvhTree() {
+        bvh_tree_ = new BvhTree(tri_list_, 1);
+    }
+
     Vector3 Shade(const Ray &in_ray, int depth);
-    bool CastRay(const Ray &in_ray, HitRec &hit_rec);
+
+    std::vector<Triangle*> GetTriangleList() { return tri_list_; }
+
 private:
     std::vector<Hittable*> hittable_list_;
     std::vector<Hittable*> light_list_;
+    std::vector<Triangle*> tri_list_;
+    BvhTree* bvh_tree_;
 };
+
 
 
 #endif //RAYTRACER_WORLD_H
