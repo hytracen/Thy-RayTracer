@@ -52,9 +52,9 @@ BvhNode *BvhTree::BuildBvh(std::vector<Triangle *> world_tri_list, int l, int r)
 
     if (len_x >= len_y && len_x >= len_z)
         std::sort(world_tri_list.begin() + l, world_tri_list.begin() + r + 1, CmpX);
-    if (len_y >= len_x && len_y >= len_z)
+    else if (len_y >= len_x && len_y >= len_z)
         std::sort(world_tri_list.begin() + l, world_tri_list.begin() + r + 1, CmpY);
-    if (len_z >= len_x && len_z >= len_y)
+    else if (len_z >= len_x && len_z >= len_y)
         std::sort(world_tri_list.begin() + l, world_tri_list.begin() + r + 1, CmpZ);
 
     bvh_node->left = BuildBvh(world_tri_list, l, (l + r) / 2);

@@ -1,15 +1,18 @@
 //
-// Created by Yoyotao on 2022/5/26.
+// Created by Yoyotao on 2022/7/6.
 //
 
-#ifndef RAYTRACER_EMISSIVE_H
-#define RAYTRACER_EMISSIVE_H
+#ifndef RAYTRACER_METAL_H
+#define RAYTRACER_METAL_H
 
 #include "material.h"
 
-class Emissive : public Material{
+/**
+ * 金属材质（镜面反射）
+ */
+class Metal : public Material{
 public:
-    explicit Emissive(std::shared_ptr<Texture> texture);
+    explicit Metal(std::shared_ptr<Texture> texture);
 
     Vector3 BSDF(const Ray &in_ray, const Ray &out_ray, const Vector3 &n) override;
 
@@ -19,4 +22,4 @@ public:
 };
 
 
-#endif //RAYTRACER_EMISSIVE_H
+#endif //RAYTRACER_METAL_H

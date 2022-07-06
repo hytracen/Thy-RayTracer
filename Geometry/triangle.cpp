@@ -62,5 +62,5 @@ Vector3 Triangle::GetNormalAt(const Ray &in_ray, const Vector3 &point) {
 }
 
 std::vector<Triangle *> Triangle::GetTriList() {
-    return {this};
+    return triangles_;
 }

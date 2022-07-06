@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "material_type.h"
 #include "../ray.h"
 #include "../hit_rec.h"
 #include "../Texture/texture.h"
@@ -22,10 +23,20 @@ public:
     /// \return BSDF值
     virtual Vector3 BSDF(const Ray &in_ray, const Ray &out_ray, const Vector3 &n) = 0;
 
+    /**
+     * 计算光线经由该材质表面被散射后的方向
+     * @param p 入射光线击中点
+     * @param n 击中点的表面法线
+     * @return 散射光线的方向
+     */
+    virtual Ray Scatter(const Ray &in_ray, const Vector3 &p, const Vector3 &n) = 0;
+
     virtual bool IsScattered() const = 0;
 
 public:
     std::shared_ptr<Texture> texture_;
+    bool is_metal_ = false;
+    MaterialType material_type_; // todo: 完善material_type, 去掉IsScattered()
 };
 
 

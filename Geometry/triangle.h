@@ -21,6 +21,7 @@ public:
         barycenter_ = 1.f / 3.f * std::accumulate(vertexes_.begin(), vertexes_.end(), Vector3());
         mat_ = mat;
         hittable_attrib_ = hittable_attrib;
+        triangles_.push_back(this);
     };
 
     Triangle(std::array<Vector3, 3> vertexes, Vector3 normal, std::shared_ptr<Material> mat,
@@ -28,6 +29,7 @@ public:
         barycenter_ = 1.f / 3.f * std::accumulate(vertexes_.begin(), vertexes_.end(), Vector3());
         mat_ = mat;
         hittable_attrib_ = hittable_attrib;
+        triangles_.push_back(this);
     }
 
     bool Hit(const Ray &in_ray, HitRec &hit_rec) override;

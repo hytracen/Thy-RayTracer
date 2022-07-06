@@ -18,10 +18,13 @@ class Hittable {
 public:
     virtual bool Hit(const Ray &in_ray, HitRec& hit_rec) = 0;
     virtual Vector3 GetNormalAt(const Ray &in_ray, const Vector3 &point);
-    virtual std::vector<Triangle*> GetTriList();
+    virtual std::vector<Triangle *> GetTriList();
 
     std::shared_ptr<Material> mat_;
     HittableAttrib hittable_attrib_;
+
+protected:
+    std::vector<Triangle*> triangles_;
 };
 
 

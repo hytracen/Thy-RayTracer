@@ -16,7 +16,13 @@ public:
                                             normal_(normal) {
         mat_ = material;
         hittable_attrib_ = hittable_attrib;
+        auto * t_1 = new Triangle{{vertexes_.at(0), vertexes_.at(1), vertexes_.at(2)}, normal_, mat_, hittable_attrib_};
+        auto * t_2 = new Triangle{{vertexes_.at(0), vertexes_.at(2), vertexes_.at(3)}, normal_, mat_, hittable_attrib_};
+        triangles_.push_back(t_1);
+        triangles_.push_back(t_2);
     }
+
+    ~Plane();
 
     bool Hit(const Ray &in_ray, HitRec &hit_rec) override;
 

@@ -19,7 +19,7 @@ public:
     void Add(Hittable* hittable);
 
     void BuildBvhTree() {
-        bvh_tree_ = new BvhTree(tri_list_, 1);
+        bvh_tree_ = new BvhTree(tri_list_, kLeafTriNum);
     }
 
     Vector3 Shade(const Ray &in_ray, int depth);
@@ -32,7 +32,5 @@ private:
     std::vector<Triangle*> tri_list_;
     BvhTree* bvh_tree_;
 };
-
-
 
 #endif //RAYTRACER_WORLD_H

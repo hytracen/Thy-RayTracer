@@ -11,6 +11,9 @@
 
 class Hittable;
 
+/**
+ * hit_record
+ */
 struct HitRec {
     bool is_hit = false;
     float ray_t = FLT_MAX;

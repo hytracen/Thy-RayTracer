@@ -16,8 +16,7 @@
 #include "Geometry/box.h"
 #include "Utils/numeric.h"
 #include "tri_mesh.h"
-
-#define DEBUG_CODE
+#include "Material/metal.h"
 
 void InitialScene(World &world);
 
@@ -31,9 +30,6 @@ int main() {
     Camera camera{{278.f, -800.f, 278.f},
                   {0.f, 1.f, 0.f},
                   {0.f, 0.f, 1.f}, kWidth, kHeight, kFieldOfView};
-//    Camera camera{{0.f, -10.f, 0.f},
-//                  {0.f, 1.f, 0.f},
-//                  {0.f, 0.f, 1.f}, kWidth, kHeight, kFieldOfView};
 
     // Initial Scene
     World world;
@@ -51,15 +47,12 @@ int main() {
             for (int i = 0; i < kSamplesPerPixel; ++i) {
                 Ray in_ray = camera.GetRay(pixel_idx, pixel_idy);
                 pixel_color += world.Shade(in_ray, kDepth);
-#ifdef DEBUG_CODE
-                if (pixel_color.GetX() > kEpsilon) {
-                    int a = 0;
-                }
-#endif
             }
             pixel_color /= kSamplesPerPixel;
             pixels_color.at(pixel_idy).at(pixel_idx) = pixel_color;
         }
+        // 打印进度
+        printf("percent:%.3f%\n", static_cast<float>(pixel_idx) / static_cast<float>(kWidth - 1) * 100.f );
     }
 
     std::string file_name = "Image-" + std::to_string(kSamplesPerPixel) + "spp.ppm";
@@ -89,30 +82,31 @@ void InitialScene(World &world) {
     auto m_red = std::make_shared<Lambert>(std::make_shared<ConstantTexture>(Vector3{0.65f, 0.05f, 0.05f}));
     auto m_white = std::make_shared<Lambert>(std::make_shared<ConstantTexture>(Vector3{0.73f, 0.73f, 0.73f}));
     auto m_green = std::make_shared<Lambert>(std::make_shared<ConstantTexture>(Vector3{0.12f, 0.45f, 0.15f}));
+    auto m_aluminum = std::make_shared<Metal>(std::make_shared<ConstantTexture>(Vector3{0.8f, 0.85f, 0.88f}));
     auto m_emissive = std::make_shared<Emissive>(std::make_shared<ConstantTexture>(Vector3{10.f, 10.f, 10.f}));
 
     world.Add(new Plane( // light
             {Vector3{213.f, 227.f, 554.f}, Vector3{213.f, 332.f, 554.f}, Vector3{343.f, 332.f, 554.f},
              Vector3{343.f, 227.f, 554.f}}, {0.f, 0.f, -1.f}, m_emissive, HittableAttrib(false, HittableType::kLight)));
-//    world.Add(new Plane( // x-y z = 555
-//            {Vector3{0.f, 0.f, 555.f}, Vector3{0.f, 555.f, 555.f}, Vector3{555.f, 555.f, 555.f},
-//             Vector3{555.f, 0.f, 555.f}}, {0.f, 0.f, -1.f}, m_white));
-//    world.Add(new Plane( // y-z x = 555
-//            {Vector3{555.f, 0.f, 555.f}, Vector3{555.f, 555.f, 555.f}, Vector3{555.f, 555.f, 0.f},
-//             Vector3{555.f, 0.f, 0.f}}, {-1.f, 0.f, 0.f}, m_green));
-//    world.Add(new Plane( // y-z x = 0
-//            {Vector3{0.f, 0.f, 555.f}, Vector3{0.f, 555.f, 555.f}, Vector3{0.f, 555.f, 0.f},
-//             Vector3{0.f, 0.f, 0.f}}, {1.f, 0.f, 0.f}, m_red));
-//    world.Add(new Plane( // x-z y = 555
-//            {Vector3{555.f, 555.f, 555.f}, Vector3{0.f, 555.f, 555.f}, Vector3{0.f, 555.f, 0.f},
-//             Vector3{555.f, 555.f, 0.f}}, {0.f, -1.f, 0.f}, m_white));
+    world.Add(new Plane( // x-y z = 555
+            {Vector3{0.f, 0.f, 555.f}, Vector3{0.f, 555.f, 555.f}, Vector3{555.f, 555.f, 555.f},
+             Vector3{555.f, 0.f, 555.f}}, {0.f, 0.f, -1.f}, m_white));
+    world.Add(new Plane( // y-z x = 555
+            {Vector3{555.f, 0.f, 555.f}, Vector3{555.f, 555.f, 555.f}, Vector3{555.f, 555.f, 0.f},
+             Vector3{555.f, 0.f, 0.f}}, {-1.f, 0.f, 0.f}, m_green));
+    world.Add(new Plane( // y-z x = 0
+            {Vector3{0.f, 0.f, 555.f}, Vector3{0.f, 555.f, 555.f}, Vector3{0.f, 555.f, 0.f},
+             Vector3{0.f, 0.f, 0.f}}, {1.f, 0.f, 0.f}, m_red));
+    world.Add(new Plane( // x-z y = 555
+            {Vector3{555.f, 555.f, 555.f}, Vector3{0.f, 555.f, 555.f}, Vector3{0.f, 555.f, 0.f},
+             Vector3{555.f, 555.f, 0.f}}, {0.f, -1.f, 0.f}, m_white));
     world.Add(new Plane( // x-y z = 0
             {Vector3{0.f, 0.f, 0.f}, Vector3{0.f, 555.f, 0.f}, Vector3{555.f, 555.f, 0.f},
              Vector3{555.f, 0.f, 0.f}}, {0.f, 0.f, 1.f}, m_white));
-//    world.Add(new Box({Vector3{100.f, 100.f, 250.f}, Vector3{100.f, 300.f, 250.f}, Vector3{200.f, 300.f, 250.f},
-//                       Vector3{200.f, 100.f, 250.f}, Vector3{100.f, 100.f, 0.f}, Vector3{100.f, 300.f, 0.f},
-//                       Vector3{200.f, 300.f, 0.f}, Vector3{200.f, 100.f, 0.f}}, m_white));
-
+    world.Add(new Box({Vector3{100.f, 300.f, 250.f}, Vector3{100.f, 500.f, 250.f}, Vector3{200.f, 500.f, 250.f},
+                       Vector3{200.f, 300.f, 250.f}, Vector3{100.f, 300.f, 0.f}, Vector3{100.f, 500.f, 0.f},
+                       Vector3{200.f, 500.f, 0.f}, Vector3{200.f, 300.f, 0.f}}, m_aluminum));
+    // todo:实现物体的平移和旋转
 //    world.Add(new Triangle({Vector3{343.f, 332.f, 554.f}, Vector3{213.f, 332.f, 554.f}, Vector3{213.f, 227.f, 554.f}},
 //                            m_emissive, HittableAttrib(
 //                    true, HittableType::kLight)));
@@ -122,12 +116,12 @@ void InitialScene(World &world) {
 //    world.Add(new Triangle({Vector3{-2.f, 2.f, 6.f}, Vector3{-2.f, -2.f, 6.f}, Vector3{2.f, 0.f, 6.f}}, m_emissive, HittableAttrib(
 //                    true, HittableType::kLight)));
 //    world.Add(new TriMesh("../Model/bunny.obj", m_white));
-    for (int i = 50; i >= 1; --i) {
-        float offset = RandomUtil::GetUniformFloat(-300.f, 200.f);
-        world.Add(new Triangle({Vector3{313.f + offset, 227.f + offset, 454.f + offset},
-                                Vector3{443.f + offset, 332.f + offset, 454.f + offset},
-                                Vector3{443.f + offset, 227.f + offset, 454.f + offset}}, m_white));
-    }
+//    for (int i = 50; i >= 1; --i) {
+//        float offset = RandomUtil::GetUniformFloat(-300.f, 200.f);
+//        world.Add(new Triangle({Vector3{313.f + offset, 227.f + offset, 454.f + offset},
+//                                Vector3{443.f + offset, 332.f + offset, 454.f + offset},
+//                                Vector3{443.f + offset, 227.f + offset, 454.f + offset}}, m_white));
+//    }
 //    world.Add(new Triangle({Vector3{313.f, 227.f, 454.f}, Vector3{443.f, 332.f, 454.f},Vector3{443.f, 227.f, 454.f}},
 //                           {0.f, 0.f, 1.f}, m_white));
 //    world.Add(new Triangle({Vector3{213.f, 327.f, 354.f}, Vector3{343.f, 432.f, 354.f},Vector3{343.f, 327.f, 354.f}},

@@ -9,5 +9,5 @@ Vector3 Hittable::GetNormalAt(const Ray &in_ray, const Vector3 &point) {
 }
 
 std::vector<Triangle *> Hittable::GetTriList() {
-    return {};
+    return triangles_;
 }

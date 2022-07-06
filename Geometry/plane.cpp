@@ -4,10 +4,17 @@
 
 #include "plane.h"
 
+Plane::~Plane() {
+    // 释放内存
+    for (auto & triangle : triangles_) {
+        delete triangle;
+    }
+    triangles_.clear();
+}
+
 bool Plane::Hit(const Ray &in_ray, HitRec &hit_rec) {
-    Triangle t1{{vertexes_.at(0), vertexes_.at(1), vertexes_.at(2)}, normal_, mat_, hittable_attrib_};
-    Triangle t2{{vertexes_.at(0), vertexes_.at(2), vertexes_.at(3)}, normal_, mat_, hittable_attrib_};
-    if (t1.Hit(in_ray, hit_rec) || t2.Hit(in_ray, hit_rec)) {
+
+    if (triangles_.at(0)->Hit(in_ray, hit_rec) || triangles_.at(1)->Hit(in_ray, hit_rec)) {
         hit_rec.hit_object = this;
         return true;
     } else {
@@ -20,8 +27,5 @@ Vector3 Plane::GetNormalAt(const Ray &in_ray, const Vector3 &point) {
 }
 
 std::vector<Triangle *> Plane::GetTriList() {
-    return {
-            new Triangle{{vertexes_.at(0), vertexes_.at(1), vertexes_.at(2)}, normal_, mat_, hittable_attrib_},
-            new Triangle{{vertexes_.at(0), vertexes_.at(2), vertexes_.at(3)}, normal_, mat_, hittable_attrib_}
-    };
+    return triangles_;
 }

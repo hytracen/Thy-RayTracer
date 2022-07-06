@@ -7,8 +7,9 @@
 
 const int kWidth = 600;
 const int kHeight = 600;
-const int kSamplesPerPixel = 50;
+const int kSamplesPerPixel = 100;
 const int kDepth = 5;
+const int kLeafTriNum = 2; // BVH数叶子节点所包含的最多的三角形的数量
 const float kFieldOfView = 20.f; // kFieldOfView = Alpha / 2
 const float kRR = 0.8f; // 俄罗斯轮盘赌
 const float kEpsilon = 1e-6; // 浮点数误差
