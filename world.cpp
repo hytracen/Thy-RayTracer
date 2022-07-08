@@ -16,6 +16,9 @@ void World::Add(Hittable *hittable) {
         case HittableType::kNormal:
             // todo: 重写triangle
             break;
+        case HittableType::kNoTri:
+
+            break;
     }
     std::vector<Triangle*> tri_list = hittable->GetTriList();
     tri_list_.insert(tri_list_.end(), tri_list.begin(), tri_list.end());
@@ -30,7 +33,7 @@ Vector3 World::Shade(const Ray &in_ray, int depth) {
     if (CastRay(in_ray, hit_rec, hittable_list_)) {
 #endif
 #ifdef BVH
-        if ((hit_rec = bvh_tree_->Hit(in_ray)).is_hit) {
+//        if ((hit_rec = bvh_tree_->Hit(in_ray)).is_hit) {
 #endif
         Hittable *hit_obj = hit_rec.hit_object;
 
@@ -38,7 +41,7 @@ Vector3 World::Shade(const Ray &in_ray, int depth) {
             return {};
 
         Vector3 r_dir, r_indir; // 直接光照和间接光照
-        Ray scattered_ray = hit_obj->mat_->Scatter(in_ray, hit_rec.hit_pos, hit_rec.normal); // 散射后的光线
+        Ray scattered_ray = hit_obj->mat_->Scatter(in_ray, hit_rec); // 散射后的光线
         float p = RandomUtil::GetUniformFloat(0.f, 1.f); // Russian Roulette
 
         switch (hit_obj->mat_->material_type_) {
@@ -84,7 +87,8 @@ Vector3 World::Shade(const Ray &in_ray, int depth) {
                 return r_dir + r_indir;
             }
 
-            case MaterialType::kSpecular: {
+            case MaterialType::kSpecular:
+            case MaterialType::kRefractive:{
                 if (p < kRR) {
                     return hit_obj->mat_->BSDF(in_ray, scattered_ray, hit_rec.normal) *
                            Shade(scattered_ray, depth - 1) / kRR;

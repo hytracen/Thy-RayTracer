@@ -7,6 +7,7 @@
 
 enum class HittableType {
     kNormal,
+    kNoTri, // todo: 临时测试用，可删除
     kLight
 };
 

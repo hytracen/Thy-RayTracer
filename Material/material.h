@@ -25,17 +25,13 @@ public:
 
     /**
      * 计算光线经由该材质表面被散射后的方向
-     * @param p 入射光线击中点
-     * @param n 击中点的表面法线
+     * @param hit_rec hit_record
      * @return 散射光线的方向
      */
-    virtual Ray Scatter(const Ray &in_ray, const Vector3 &p, const Vector3 &n) = 0;
-
-    virtual bool IsScattered() const = 0;
+    virtual Ray Scatter(const Ray &in_ray, const HitRec &hit_rec) = 0;
 
 public:
     std::shared_ptr<Texture> texture_;
-    bool is_metal_ = false;
     MaterialType material_type_; // todo: 完善material_type, 去掉IsScattered()
 };
 

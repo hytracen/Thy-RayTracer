@@ -12,10 +12,6 @@ Vector3 Emissive::BSDF(const Ray &in_ray, const Ray &out_ray, const Vector3 &n) 
     return {1.f, 1.f, 1.f};
 }
 
-Ray Emissive::Scatter(const Ray &in_ray, const Vector3 &p, const Vector3 &n) {
+Ray Emissive::Scatter(const Ray &in_ray, const HitRec &hit_rec) {
     return {};
-}
-
-bool Emissive::IsScattered() const {
-    return false;
 }

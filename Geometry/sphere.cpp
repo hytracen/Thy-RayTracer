@@ -9,10 +9,6 @@
 /// \param hit_rec 描述相交结果的结构体
 /// \return 是否相交
 bool Sphere::Hit(const Ray &in_ray, HitRec &hit_rec) {
-    if (fabsf(GetDistanceBetween2Points(in_ray.GetOrig(), center_) - radius_) <= 0.1f) {
-        hit_rec.is_hit = false;
-        return false;
-    }
     float c_x = center_.GetX(), c_y = center_.GetY(), c_z = center_.GetZ(); // sphere的center坐标
     float o_x = in_ray.GetOrig().GetX(), o_y = in_ray.GetOrig().GetY(), o_z = in_ray.GetOrig().GetZ(); // ray的起点坐标
     float d_x = in_ray.GetDir().GetX(), d_y = in_ray.GetDir().GetY(), d_z = in_ray.GetDir().GetZ(); // ray的方向
@@ -24,22 +20,25 @@ bool Sphere::Hit(const Ray &in_ray, HitRec &hit_rec) {
         hit_rec.is_hit = false;
         return false;
     }
-    float t_1 = (-b + sqrtf(delta)) / (2 * a);
-    float t_2 = (-b - sqrtf(delta)) / (2 * a);
-    float t = 0.f;
+    float t_1 = (-b - sqrtf(delta)) / (2 * a);
+    float t_2 = (-b + sqrtf(delta)) / (2 * a);
+    float t = t_1;
 
-    // 光线与球有两个交点时存在三种情况
-    // 两个t均为正，说明交点在光线行进的方向
-    if (t_1 > 0.f && t_2 > 0.f) {
-        t = fminf(t_1, t_2);
-    } else if (t_1 <= 0.f && t_2 <= 0.f) { // 两个t均为负，说明交点在光线行进的负向，此时认为没有交点
-        hit_rec.is_hit = false;
-        return false;
-    } else { // 两个t一正一负，说明光线的起点在球内部，此时认为与球有一个交点，即t为正值的交点
-        t = fmaxf(t_1, t_2);
+    const float t_min = 0.001f;
+    const float t_max = FLT_MAX;
+
+    // 取可接受范围(t_min, t_max)内的最小的t值
+    if (t < t_min || t > t_max) {
+        t = t_2;
+        if (t < t_min || t > t_max) {
+            hit_rec.is_hit = false;
+            return false;
+        }
     }
 
+    hit_rec.ray_t = t;
     hit_rec.is_hit = true;
+    hit_rec.is_front = in_ray.GetDir().Dot((in_ray.At(t) - center_).Normalize()) < 0.f;
     hit_rec.hit_pos = in_ray.At(t);
     hit_rec.color = mat_->texture_->AlbedoAtTexel(0.f, 0.f, Vector3());
     hit_rec.normal = GetNormalAt(in_ray, hit_rec.hit_pos);
@@ -48,5 +47,18 @@ bool Sphere::Hit(const Ray &in_ray, HitRec &hit_rec) {
 }
 
 Vector3 Sphere::GetNormalAt(const Ray &in_ray, const Vector3 &point) {
-    return (point - center_).Normalize();
+    Vector3 n = (point - center_).Normalize();
+    if (hittable_attrib_.is_2sided_) { // 让法线方向总是against光线方向
+        if (in_ray.GetDir().Dot(n) >= 0.f) {
+            return -n;
+        } else {
+            return n;
+        }
+    } else {
+        return n;
+    }
+}
+
+std::vector<Triangle *> Sphere::GetTriList() {
+    return Hittable::GetTriList();
 }

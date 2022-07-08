@@ -16,10 +16,9 @@ public:
 
     Vector3 BSDF(const Ray &in_ray, const Ray &out_ray, const Vector3 &n) override;
 
-    Ray Scatter(const Ray &in_ray, const Vector3 &p, const Vector3 &n) override;
-
-    bool IsScattered() const override;
+    Ray Scatter(const Ray &in_ray, const HitRec &hit_rec) override;
 };
 
+Ray Reflect(const Ray &in_ray, const Vector3 &p, const Vector3 &n);
 
 #endif //RAYTRACER_METAL_H

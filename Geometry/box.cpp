@@ -11,7 +11,6 @@ Box::~Box() {
 }
 
 bool Box::Hit(const Ray &in_ray, HitRec &hit_rec) {
-    // todo:内存泄漏
     float t = std::numeric_limits<float>::max();
     bool is_hit = false;
     HitRec temp_hit_rec;

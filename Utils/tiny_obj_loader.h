@@ -2048,7 +2048,7 @@ void LoadMtl(std::map<std::string, int> *material_map,
       continue;
     }
 
-    // ior(index of refraction)
+    // ior_(index of refraction)
     if (token[0] == 'N' && token[1] == 'i' && IS_SPACE((token[2]))) {
       token += 2;
       material.ior = parseReal(&token);

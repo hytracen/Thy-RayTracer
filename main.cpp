@@ -14,9 +14,11 @@
 #include "camera.h"
 #include "world.h"
 #include "Geometry/box.h"
+#include "Geometry/sphere.h"
 #include "Utils/numeric.h"
 #include "tri_mesh.h"
 #include "Material/metal.h"
+#include "Material/dielectrics.h"
 
 void InitialScene(World &world);
 
@@ -52,7 +54,7 @@ int main() {
             pixels_color.at(pixel_idy).at(pixel_idx) = pixel_color;
         }
         // 打印进度
-        printf("percent:%.3f%\n", static_cast<float>(pixel_idx) / static_cast<float>(kWidth - 1) * 100.f );
+        printf("percent:%.3f%\n", static_cast<float>(pixel_idx) / static_cast<float>(kWidth - 1) * 100.f);
     }
 
     std::string file_name = "Image-" + std::to_string(kSamplesPerPixel) + "spp.ppm";
@@ -79,10 +81,13 @@ int main() {
 }
 
 void InitialScene(World &world) {
-    auto m_red = std::make_shared<Lambert>(std::make_shared<ConstantTexture>(Vector3{0.65f, 0.05f, 0.05f}));
-    auto m_white = std::make_shared<Lambert>(std::make_shared<ConstantTexture>(Vector3{0.73f, 0.73f, 0.73f}));
-    auto m_green = std::make_shared<Lambert>(std::make_shared<ConstantTexture>(Vector3{0.12f, 0.45f, 0.15f}));
+    auto m_red = std::make_shared<Lambert>(Vector3{0.65f, 0.05f, 0.05f});
+    auto m_white = std::make_shared<Lambert>(Vector3{0.73f, 0.73f, 0.73f});
+    auto m_green = std::make_shared<Lambert>(Vector3{0.12f, 0.45f, 0.15f});
+    auto m_blue = std::make_shared<Lambert>(Vector3{0.12f, 0.15f, 0.65f});
+//    auto m_orange = std::make_shared<Lambert>(Vector3{0.65f, 0.35f, 0.05f});
     auto m_aluminum = std::make_shared<Metal>(std::make_shared<ConstantTexture>(Vector3{0.8f, 0.85f, 0.88f}));
+    auto m_glass = std::make_shared<Dielectrics>(std::make_shared<ConstantTexture>(Vector3{1.f, 1.f, 1.f}), 1.5f);
     auto m_emissive = std::make_shared<Emissive>(std::make_shared<ConstantTexture>(Vector3{10.f, 10.f, 10.f}));
 
     world.Add(new Plane( // light
@@ -99,13 +104,19 @@ void InitialScene(World &world) {
              Vector3{0.f, 0.f, 0.f}}, {1.f, 0.f, 0.f}, m_red));
     world.Add(new Plane( // x-z y = 555
             {Vector3{555.f, 555.f, 555.f}, Vector3{0.f, 555.f, 555.f}, Vector3{0.f, 555.f, 0.f},
-             Vector3{555.f, 555.f, 0.f}}, {0.f, -1.f, 0.f}, m_white));
+             Vector3{555.f, 555.f, 0.f}}, {0.f, -1.f, 0.f}, m_blue));
     world.Add(new Plane( // x-y z = 0
             {Vector3{0.f, 0.f, 0.f}, Vector3{0.f, 555.f, 0.f}, Vector3{555.f, 555.f, 0.f},
              Vector3{555.f, 0.f, 0.f}}, {0.f, 0.f, 1.f}, m_white));
-    world.Add(new Box({Vector3{100.f, 300.f, 250.f}, Vector3{100.f, 500.f, 250.f}, Vector3{200.f, 500.f, 250.f},
-                       Vector3{200.f, 300.f, 250.f}, Vector3{100.f, 300.f, 0.f}, Vector3{100.f, 500.f, 0.f},
-                       Vector3{200.f, 500.f, 0.f}, Vector3{200.f, 300.f, 0.f}}, m_aluminum));
+//    world.Add(new Box({Vector3{100.f, 200.f, 250.f}, Vector3{100.f, 400.f, 250.f}, Vector3{250.f, 400.f, 250.f},
+//                       Vector3{250.f, 200.f, 250.f}, Vector3{100.f, 200.f, 0.f}, Vector3{100.f, 400.f, 0.f},
+//                       Vector3{250.f, 400.f, 0.f}, Vector3{250.f, 200.f, 0.f}}, m_aluminum));
+    world.Add(new Box({Vector3{450.f, 150.f, 100.f}, Vector3{450.f, 350.f, 100.f},
+                       Vector3{550.f, 350.f, 100.f}, Vector3{550.f, 150.f, 100.f},
+                       Vector3{450.f, 150.f, 0.f}, Vector3{450.f, 350.f, 0.f},
+                       Vector3{550.f, 350.f, 0.f}, Vector3{550.f, 150.f, 0.f}},
+                      m_glass));
+    world.Add(new Sphere(Vector3(277.5f, 190.f, 90.f), 90.f, m_glass));
     // todo:实现物体的平移和旋转
 //    world.Add(new Triangle({Vector3{343.f, 332.f, 554.f}, Vector3{213.f, 332.f, 554.f}, Vector3{213.f, 227.f, 554.f}},
 //                            m_emissive, HittableAttrib(

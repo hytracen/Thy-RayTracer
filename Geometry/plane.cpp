@@ -13,7 +13,6 @@ Plane::~Plane() {
 }
 
 bool Plane::Hit(const Ray &in_ray, HitRec &hit_rec) {
-
     if (triangles_.at(0)->Hit(in_ray, hit_rec) || triangles_.at(1)->Hit(in_ray, hit_rec)) {
         hit_rec.hit_object = this;
         return true;

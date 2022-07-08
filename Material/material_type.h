@@ -8,7 +8,8 @@
 enum class MaterialType {
     kEmissive,// 自发光
     kDiffuse, // 漫反射
-    kSpecular    // 镜面反射
+    kSpecular,    // 镜面反射
+    kRefractive // 折射
 };
 
 #endif //RAYTRACER_MATERIAL_TYPE_H

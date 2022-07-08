@@ -16,6 +16,7 @@ class Hittable;
  */
 struct HitRec {
     bool is_hit = false;
+    bool is_front = false; // 是否击中物体的正面（against法线的方向）
     float ray_t = FLT_MAX;
     Vector3 hit_pos;
     Vector3 color;
