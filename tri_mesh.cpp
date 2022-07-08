@@ -19,20 +19,35 @@ TriMesh::TriMesh(const std::string &file_name, std::shared_ptr<Material> mat, Hi
         for (int j = 0; j < 3; j++) {
             vertexes.at(j) = Vector3{mesh.Vertices[i + j].Position.X,
                               mesh.Vertices[i + j].Position.Y,
-                              mesh.Vertices[i + j].Position.Z} * 60.f; // 放大倍数
+                              mesh.Vertices[i + j].Position.Z} * 2000.f + Vector3{200.f, 200.f, 200.f}; // 放大倍数
         }
-        tri_list_.push_back(new Triangle(vertexes, mat_, hittable_attrib_));
+        triangles_.push_back(new Triangle(vertexes, mat_, hittable_attrib_));
     }
 }
 
 bool TriMesh::Hit(const Ray &in_ray, HitRec &hit_rec) {
     // todo: 修改继承结构
-    auto* bvhTree = new BvhTree(tri_list_, 8);
-    hit_rec = bvhTree->Hit(in_ray);
-
+//    auto* bvhTree = new BvhTree(tri_list_, 8);
+//    hit_rec = bvhTree->Hit(in_ray);
+    std::cerr << "TriMesh Hit Error!" << std::endl;
     return hit_rec.is_hit;
 }
 
 std::vector<Triangle *> TriMesh::GetTriList() {
-    return tri_list_;
+    return triangles_;
+}
+
+void TriMesh::RotateAround(Vector3 p, Vector3 dir, float angle) {
+    // 三角形旋转
+    for (auto tri : triangles_) {
+        tri->RotateAround(p,dir,angle);
+    }
+    // todo:轴心旋转
+}
+
+void TriMesh::MoveBy(Vector3 dir, float dis) {
+    for (auto tri : triangles_) {
+        tri->MoveBy(dir, dis);
+    }
+    // todo : 轴心移动
 }

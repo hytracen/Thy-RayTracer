@@ -37,4 +37,9 @@ std::vector<Triangle *> Box::GetTriList() {
     return triangles_;
 }
 
-// todo: GetTriList
+// todo: 暂时仅实现绕z轴旋转
+void Box::LocalRotate(float angle) {
+    for (auto tri : triangles_) {
+        tri->RotateAround(center_, {0.f,0.f,1.f}, angle);
+    }
+}

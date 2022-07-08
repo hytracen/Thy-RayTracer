@@ -62,3 +62,29 @@ Vector3 Triangle::GetNormalAt(const Ray &in_ray, const Vector3 &point) {
 std::vector<Triangle *> Triangle::GetTriList() {
     return triangles_;
 }
+
+void Triangle::RotateAround(Vector3 p, Vector3 dir, float angle) {
+    float radian = angle / 180.f * (float)M_PI;
+    // 旋转坐标
+    for (auto &v : vertexes_) {
+        v = v - p; // 平移至原点
+        v = v * cosf(radian) + dir.Cross(v) * sinf(radian) + dir * dir.Dot(v) * (1 - cosf(radian)); // 绕轴旋转
+        v = v + p;
+    }
+    // 旋转法线
+    normal_ = normal_ * cosf(radian) + dir.Cross(normal_) * sinf(radian) + dir * dir.Dot(normal_) * (1 - cosf(radian)); // 绕轴旋转
+    // 旋转重心
+    barycenter_ = barycenter_ - p;
+    barycenter_ = barycenter_ * cosf(radian) + dir.Cross(barycenter_) * sinf(radian) + dir * dir.Dot(barycenter_) * (1 - cosf(radian)); // 绕轴旋转
+    barycenter_ = barycenter_ + p;
+}
+
+void Triangle::MoveBy(Vector3 dir, float dis) {
+    Vector3 d = dir.Normalize() * dis;
+    // 移动坐标
+    for (auto &v : vertexes_) {
+        v = v + d;
+    }
+    // 移动重心
+    barycenter_ = barycenter_ + d;
+}

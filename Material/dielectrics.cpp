@@ -27,19 +27,11 @@ Ray Dielectrics::Scatter(const Ray &in_ray, const HitRec &hit_rec) {
 Ray Refract(const Ray &in_ray, const HitRec &hit_rec, float eta_ir) {
     Vector3 in_dir = in_ray.GetDir().Normalize();
     Vector3 n = hit_rec.normal;
-//    float delta = 1.f - powf(eta_ir, 2.f) * (1.f - powf(n.Dot(in_dir), 2));
-//
-//    Ray refracted_ray;
-//    refracted_ray.SetOrig(hit_rec.hit_pos);
-//    refracted_ray.SetDir(-(eta_ir * n.Dot(in_dir) + sqrtf(delta)) * n + eta_ir * in_dir);
-
-    auto cos_theta = fminf(-in_dir.Dot(n), 1.0);
-    Vector3 r_out_perp = eta_ir * (in_dir + cos_theta * n);
-    Vector3 r_out_parallel = -sqrtf(fabsf(1.0f - powf(r_out_perp.Length(), 2.f))) * n;
+    float delta = 1.f - powf(eta_ir, 2.f) * (1.f - powf(n.Dot(in_dir), 2));
 
     Ray refracted_ray;
     refracted_ray.SetOrig(hit_rec.hit_pos);
-    refracted_ray.SetDir((r_out_perp + r_out_parallel).Normalize());
+    refracted_ray.SetDir(-(eta_ir * n.Dot(in_dir) + sqrtf(delta)) * n + eta_ir * in_dir);
 
     return refracted_ray;
 }

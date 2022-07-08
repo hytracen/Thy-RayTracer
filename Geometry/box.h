@@ -40,39 +40,16 @@ public:
             auto tmp_tri_list = plane->GetTriList();
             triangles_.insert(triangles_.end(), tmp_tri_list.begin(), tmp_tri_list.end());
         }
-
-//        auto tri_list = p_u.GetTriList();
-//        triangles_.insert(triangles_.end(), tri_list.begin(), tri_list.end());
-//
-//        tri_list = p_d.GetTriList();
-//        triangles_.insert(triangles_.end(), tri_list.begin(), tri_list.end());
-//
-//        tri_list = p_f.GetTriList();
-//        triangles_.insert(triangles_.end(), tri_list.begin(), tri_list.end());
-//
-//        tri_list = p_b.GetTriList();
-//        triangles_.insert(triangles_.end(), tri_list.begin(), tri_list.end());
-//
-//        tri_list = p_l.GetTriList();
-//        triangles_.insert(triangles_.end(), tri_list.begin(), tri_list.end());
-//
-//        tri_list = p_r.GetTriList();
-//        triangles_.insert(triangles_.end(), tri_list.begin(), tri_list.end());
-//        std::vector<Plane> planes{p_u, p_d, p_f, p_b, p_l, p_r};
-//        for (Plane& p : planes) {
-//            auto tri_list = p.GetTriList();
-//            triangles_.insert(triangles_.end(), tri_list.begin(), tri_list.end());
-//        }
     }
 
     ~Box();
-
     bool Hit(const Ray &in_ray, HitRec &hit_rec) override;
-
     Vector3 GetNormalAt(const Ray &in_ray, const Vector3 &point) override;
-
     std::vector<Triangle *> GetTriList() override;
 
+    void LocalRotate(float angle) override;
+
+    Vector3 center_; // 中心
 private:
     std::array<Vector3, 8> vertexes_; // 顺时针，自上而下初始化
     std::array<Plane*, 6> planes_;

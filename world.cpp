@@ -5,8 +5,8 @@
 #include "world.h"
 #include "Material/metal.h"
 
-//#define BVH
-#define NotBVH
+#define BVH
+//#define NotBVH
 
 void World::Add(Hittable *hittable) {
     switch (hittable->hittable_attrib_.type_) {
@@ -33,7 +33,7 @@ Vector3 World::Shade(const Ray &in_ray, int depth) {
     if (CastRay(in_ray, hit_rec, hittable_list_)) {
 #endif
 #ifdef BVH
-//        if ((hit_rec = bvh_tree_->Hit(in_ray)).is_hit) {
+        if ((hit_rec = bvh_tree_->Hit(in_ray)).is_hit) {
 #endif
         Hittable *hit_obj = hit_rec.hit_object;
 

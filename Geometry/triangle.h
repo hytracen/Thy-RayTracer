@@ -38,6 +38,10 @@ public:
 
     std::vector<Triangle *> GetTriList() override;
 
+    void RotateAround(Vector3 p, Vector3 dir, float angle) override;
+
+    void MoveBy(Vector3 dir, float dis) override;
+
     float GetArea();
 
 public:

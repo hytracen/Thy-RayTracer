@@ -111,13 +111,15 @@ void InitialScene(World &world) {
 //    world.Add(new Box({Vector3{100.f, 200.f, 250.f}, Vector3{100.f, 400.f, 250.f}, Vector3{250.f, 400.f, 250.f},
 //                       Vector3{250.f, 200.f, 250.f}, Vector3{100.f, 200.f, 0.f}, Vector3{100.f, 400.f, 0.f},
 //                       Vector3{250.f, 400.f, 0.f}, Vector3{250.f, 200.f, 0.f}}, m_aluminum));
-    world.Add(new Box({Vector3{450.f, 150.f, 100.f}, Vector3{450.f, 350.f, 100.f},
-                       Vector3{550.f, 350.f, 100.f}, Vector3{550.f, 150.f, 100.f},
-                       Vector3{450.f, 150.f, 0.f}, Vector3{450.f, 350.f, 0.f},
-                       Vector3{550.f, 350.f, 0.f}, Vector3{550.f, 150.f, 0.f}},
-                      m_glass));
-    world.Add(new Sphere(Vector3(277.5f, 190.f, 90.f), 90.f, m_glass));
-    // todo:实现物体的平移和旋转
+//    Box* box = new Box({Vector3{150.f, 150.f, 200.f}, Vector3{150.f, 350.f, 200.f},
+//                       Vector3{350.f, 350.f, 200.f}, Vector3{350.f, 150.f, 200.f},
+//                       Vector3{150.f, 150.f, 0.f}, Vector3{150.f, 350.f, 0.f},
+//                       Vector3{350.f, 350.f, 0.f}, Vector3{350.f, 150.f, 0.f}},
+//                      m_glass);
+//    box->center_ = {250.f, 250.f, 100.f};
+//    box->LocalRotate(45.f);
+//    world.Add(box);
+//    world.Add(new Sphere(Vector3(277.5f, 190.f, 90.f), 90.f, m_glass));
 //    world.Add(new Triangle({Vector3{343.f, 332.f, 554.f}, Vector3{213.f, 332.f, 554.f}, Vector3{213.f, 227.f, 554.f}},
 //                            m_emissive, HittableAttrib(
 //                    true, HittableType::kLight)));
@@ -126,7 +128,11 @@ void InitialScene(World &world) {
 //                    true, HittableType::kLight)));
 //    world.Add(new Triangle({Vector3{-2.f, 2.f, 6.f}, Vector3{-2.f, -2.f, 6.f}, Vector3{2.f, 0.f, 6.f}}, m_emissive, HittableAttrib(
 //                    true, HittableType::kLight)));
-//    world.Add(new TriMesh("../Model/bunny.obj", m_white));
+    auto *bunny = new TriMesh("../Model/bunny.obj", m_white);
+    bunny->RotateAround({275.5f,275.5f,0.f},{1.f,0.f,0.f},90.f);
+    bunny->MoveBy({1.f,1.f,0.f},150.f);
+    bunny->MoveBy({0.f,1.f,0.f},200.f);
+    world.Add(bunny);
 //    for (int i = 50; i >= 1; --i) {
 //        float offset = RandomUtil::GetUniformFloat(-300.f, 200.f);
 //        world.Add(new Triangle({Vector3{313.f + offset, 227.f + offset, 454.f + offset},
