@@ -32,7 +32,7 @@ public:
 
 public:
     std::shared_ptr<Texture> texture_;
-    MaterialType material_type_; // todo: 完善material_type, 去掉IsScattered()
+    MaterialType material_type_;
 };
 
 

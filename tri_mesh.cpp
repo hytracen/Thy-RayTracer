@@ -49,5 +49,5 @@ void TriMesh::MoveBy(Vector3 dir, float dis) {
     for (auto tri : triangles_) {
         tri->MoveBy(dir, dis);
     }
-    // todo : 轴心移动
+    pivot_ = pivot_ + dir * dis;
 }

@@ -11,8 +11,6 @@
 #include "Geometry/triangle.h"
 #include "aabb.h"
 
-// todo: 可以针对给定的三角形列表生成BVH
-
 struct BvhNode {
     BvhNode* left = nullptr;
     BvhNode* right = nullptr;
@@ -22,8 +20,8 @@ struct BvhNode {
 
 class BvhTree {
 public:
-    BvhTree(const std::vector<Triangle *>& world_tri_list, int leaf_tri_num) : leaf_tri_num_(leaf_tri_num) {
-        root_ = BuildBvh(world_tri_list, 0, (int)world_tri_list.size()-1);
+    BvhTree(const std::vector<Triangle *>& tri_list, int leaf_tri_num) : leaf_tri_num_(leaf_tri_num) {
+        root_ = BuildBvh(tri_list, 0, (int)tri_list.size() - 1);
     }
 
 public:

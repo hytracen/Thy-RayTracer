@@ -85,9 +85,8 @@ void InitialScene(World &world) {
     auto m_white = std::make_shared<Lambert>(Vector3{0.73f, 0.73f, 0.73f});
     auto m_green = std::make_shared<Lambert>(Vector3{0.12f, 0.45f, 0.15f});
     auto m_blue = std::make_shared<Lambert>(Vector3{0.12f, 0.15f, 0.65f});
-//    auto m_orange = std::make_shared<Lambert>(Vector3{0.65f, 0.35f, 0.05f});
     auto m_aluminum = std::make_shared<Metal>(std::make_shared<ConstantTexture>(Vector3{0.8f, 0.85f, 0.88f}));
-    auto m_glass = std::make_shared<Dielectrics>(std::make_shared<ConstantTexture>(Vector3{1.f, 1.f, 1.f}), 1.5f);
+    auto m_glass = std::make_shared<Dielectrics>(std::make_shared<ConstantTexture>(Vector3{0.8f, 0.8f, 0.8f}), 1.5f);
     auto m_emissive = std::make_shared<Emissive>(std::make_shared<ConstantTexture>(Vector3{10.f, 10.f, 10.f}));
 
     world.Add(new Plane( // light
@@ -128,7 +127,7 @@ void InitialScene(World &world) {
 //                    true, HittableType::kLight)));
 //    world.Add(new Triangle({Vector3{-2.f, 2.f, 6.f}, Vector3{-2.f, -2.f, 6.f}, Vector3{2.f, 0.f, 6.f}}, m_emissive, HittableAttrib(
 //                    true, HittableType::kLight)));
-    auto *bunny = new TriMesh("../Model/bunny.obj", m_white);
+    auto *bunny = new TriMesh("../Model/bunny.obj", m_glass);
     bunny->RotateAround({275.5f,275.5f,0.f},{1.f,0.f,0.f},90.f);
     bunny->MoveBy({1.f,1.f,0.f},150.f);
     bunny->MoveBy({0.f,1.f,0.f},200.f);

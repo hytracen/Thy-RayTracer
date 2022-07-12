@@ -29,17 +29,9 @@ bool Box::Hit(const Ray &in_ray, HitRec &hit_rec) {
 }
 
 Vector3 Box::GetNormalAt(const Ray &in_ray, const Vector3 &point) {
-    // todo:盒体的表面法线
     return {};
 }
 
 std::vector<Triangle *> Box::GetTriList() {
     return triangles_;
-}
-
-// todo: 暂时仅实现绕z轴旋转
-void Box::LocalRotate(float angle) {
-    for (auto tri : triangles_) {
-        tri->RotateAround(center_, {0.f,0.f,1.f}, angle);
-    }
 }

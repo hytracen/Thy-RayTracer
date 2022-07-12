@@ -20,13 +20,6 @@ public:
     virtual Vector3 GetNormalAt(const Ray &in_ray, const Vector3 &point);
     virtual std::vector<Triangle *> GetTriList();
 
-    // todo: 优化LocalRotate逻辑
-    /**
-     * 沿自身中轴逆时针旋转
-     * @param angle 旋转的角度（角度制）
-     */
-    virtual void LocalRotate(float angle);
-
     /**
      * 绕给定轴逆时针旋转
      * @param p 轴的起点

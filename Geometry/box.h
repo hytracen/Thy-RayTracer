@@ -47,9 +47,9 @@ public:
     Vector3 GetNormalAt(const Ray &in_ray, const Vector3 &point) override;
     std::vector<Triangle *> GetTriList() override;
 
-    void LocalRotate(float angle) override;
-
+public:
     Vector3 center_; // 中心
+
 private:
     std::array<Vector3, 8> vertexes_; // 顺时针，自上而下初始化
     std::array<Plane*, 6> planes_;

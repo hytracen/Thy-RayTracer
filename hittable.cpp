@@ -12,10 +12,6 @@ std::vector<Triangle *> Hittable::GetTriList() {
     return triangles_;
 }
 
-void Hittable::LocalRotate(float angle) {
-
-}
-
 void Hittable::RotateAround(Vector3 p, Vector3 dir, float angle) {
 
 }

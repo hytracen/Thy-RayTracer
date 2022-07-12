@@ -1,7 +1,3 @@
-//
-// Created by Yoyotao on 2022/5/23.
-//
-
 #include "triangle.h"
 
 bool Triangle::Hit(const Ray &in_ray, HitRec &hit_rec) {
@@ -46,7 +42,6 @@ float Triangle::GetArea() {
     return sqrtf(s * (s - a) * (s - b) * (s - c));
 }
 
-// todo: 取消自动反转
 Vector3 Triangle::GetNormalAt(const Ray &in_ray, const Vector3 &point) {
     if (hittable_attrib_.is_2sided_) { // 让法线方向总是against光线方向
         if (in_ray.GetDir().Dot(normal_) >= 0.f) {

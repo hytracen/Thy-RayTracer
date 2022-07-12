@@ -14,10 +14,7 @@ void World::Add(Hittable *hittable) {
             light_list_.push_back(hittable);
             break;
         case HittableType::kNormal:
-            // todo: 重写triangle
-            break;
         case HittableType::kNoTri:
-
             break;
     }
     std::vector<Triangle*> tri_list = hittable->GetTriList();
@@ -70,10 +67,13 @@ Vector3 World::Shade(const Ray &in_ray, int depth) {
 #endif
                     // 如果中间没有其他物体阻挡
                     if (dis - GetDistanceBetween2Points(hit_rec.hit_pos, light_hit_rec.hit_pos) < 0.01f) {
+                        float light_area = 0.f; // 光源面积
+                        for (auto tri : light->GetTriList())
+                            light_area += tri->GetArea();
                         r_dir += hit_obj->mat_->BSDF(in_ray, ray2light, hit_rec.normal) * Vector3{15.f, 15.f, 15.f}
                                  * ray2light.GetDir().Dot(hit_rec.normal) *
                                  (-ray2light.GetDir()).Dot(light->GetNormalAt(ray2light, {}))
-                                 / powf(dis, 2) / Pdf::GetUniAreaPdf(13650.f);
+                                 / powf(dis, 2) / Pdf::GetUniAreaPdf(light_area);
                     }
                 }
 
