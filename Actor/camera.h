@@ -5,9 +5,9 @@
 #ifndef RAYTRACER_CAMERA_H
 #define RAYTRACER_CAMERA_H
 
-#include "Utils/vector3.h"
-#include "Utils/random_util.h"
-#include "ray.h"
+#include "../Utils/vector3.h"
+#include "../Utils/random_util.h"
+#include "../ray.h"
 
 class Camera {
 public:

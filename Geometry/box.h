@@ -47,6 +47,10 @@ public:
     Vector3 GetNormalAt(const Ray &in_ray, const Vector3 &point) override;
     std::vector<Triangle *> GetTriList() override;
 
+    void RotateAround(Vector3 p, Vector3 dir, float angle) override;
+
+    void MoveBy(Vector3 dir, float dis) override;
+
 public:
     Vector3 center_; // 中心
 

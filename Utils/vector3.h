@@ -57,6 +57,22 @@ public:
         return *this;
     }
 
+    /**
+     * 将一个点绕轴旋转给定的角度
+     * @param p 轴点
+     * @param dir 轴的方向
+     * @param angle 逆时针旋转的角度
+     */
+    void PointRotateAroundAxis(const Vector3 &p, const Vector3 &dir, float angle);
+
+    /**
+     * 将一个向量绕轴旋转给定的角度
+     * @param p 轴点
+     * @param dir 轴的方向
+     * @param angle 逆时针旋转的角度
+     */
+    void VectorRotateAroundAxis(const Vector3 &p, const Vector3 &dir, float angle);
+
 private:
     float x_ = 0.f, y_ = 0.f, z_ = 0.f;
 };
@@ -85,14 +101,6 @@ float CosThetaOf2Vec(const Vector3 &v1, const Vector3 &v2);
 
 // 计算两点间的距离
 float GetDistanceBetween2Points(Vector3 v1, Vector3 v2);
-
-/**
- * 将一个向量绕轴旋转给定的角度
- * @param v
- * @param n
- * @param angle
- */
-void RotateAroundAxis(Vector3 &v, Vector3 n, float angle);
 
 /**
  * 将Local坐标系（以n为z轴）的向量转换到世界坐标系（以（0，0，1）为z轴）下

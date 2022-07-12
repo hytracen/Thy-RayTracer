@@ -11,12 +11,13 @@
 #include "Utils/random_util.h"
 #include "Utils/pdf.h"
 #include "Texture/constant_texture.h"
-#include "camera.h"
+#include "Actor/camera.h"
 #include "world.h"
 #include "Geometry/box.h"
 #include "Geometry/sphere.h"
 #include "Utils/numeric.h"
-#include "tri_mesh.h"
+#include "Actor/tri_mesh.h"
+#include "Actor/area_light.h"
 #include "Material/metal.h"
 #include "Material/dielectrics.h"
 
@@ -89,9 +90,8 @@ void InitialScene(World &world) {
     auto m_glass = std::make_shared<Dielectrics>(std::make_shared<ConstantTexture>(Vector3{0.8f, 0.8f, 0.8f}), 1.5f);
     auto m_emissive = std::make_shared<Emissive>(std::make_shared<ConstantTexture>(Vector3{10.f, 10.f, 10.f}));
 
-    world.Add(new Plane( // light
-            {Vector3{213.f, 227.f, 554.f}, Vector3{213.f, 332.f, 554.f}, Vector3{343.f, 332.f, 554.f},
-             Vector3{343.f, 227.f, 554.f}}, {0.f, 0.f, -1.f}, m_emissive, HittableAttrib(false, HittableType::kLight)));
+    world.Add(new AreaLight({278.f, 279.f, 554.f}, {130.f, 0.f, 0.f}, {0.f, 105.f, 0.f}, {0.f, 0.f, -1.f}, m_emissive, HittableAttrib(
+            false, HittableType::kLight)));
     world.Add(new Plane( // x-y z = 555
             {Vector3{0.f, 0.f, 555.f}, Vector3{0.f, 555.f, 555.f}, Vector3{555.f, 555.f, 555.f},
              Vector3{555.f, 0.f, 555.f}}, {0.f, 0.f, -1.f}, m_white));
@@ -107,16 +107,16 @@ void InitialScene(World &world) {
     world.Add(new Plane( // x-y z = 0
             {Vector3{0.f, 0.f, 0.f}, Vector3{0.f, 555.f, 0.f}, Vector3{555.f, 555.f, 0.f},
              Vector3{555.f, 0.f, 0.f}}, {0.f, 0.f, 1.f}, m_white));
-//    world.Add(new Box({Vector3{100.f, 200.f, 250.f}, Vector3{100.f, 400.f, 250.f}, Vector3{250.f, 400.f, 250.f},
-//                       Vector3{250.f, 200.f, 250.f}, Vector3{100.f, 200.f, 0.f}, Vector3{100.f, 400.f, 0.f},
-//                       Vector3{250.f, 400.f, 0.f}, Vector3{250.f, 200.f, 0.f}}, m_aluminum));
+    world.Add(new Box({Vector3{100.f, 200.f, 250.f}, Vector3{100.f, 400.f, 250.f}, Vector3{250.f, 400.f, 250.f},
+                       Vector3{250.f, 200.f, 250.f}, Vector3{100.f, 200.f, 0.f}, Vector3{100.f, 400.f, 0.f},
+                       Vector3{250.f, 400.f, 0.f}, Vector3{250.f, 200.f, 0.f}}, m_white));
 //    Box* box = new Box({Vector3{150.f, 150.f, 200.f}, Vector3{150.f, 350.f, 200.f},
 //                       Vector3{350.f, 350.f, 200.f}, Vector3{350.f, 150.f, 200.f},
 //                       Vector3{150.f, 150.f, 0.f}, Vector3{150.f, 350.f, 0.f},
 //                       Vector3{350.f, 350.f, 0.f}, Vector3{350.f, 150.f, 0.f}},
 //                      m_glass);
 //    box->center_ = {250.f, 250.f, 100.f};
-//    box->LocalRotate(45.f);
+//    box->RotateAround(box->center_, {0,0,1}, 45.f);
 //    world.Add(box);
 //    world.Add(new Sphere(Vector3(277.5f, 190.f, 90.f), 90.f, m_glass));
 //    world.Add(new Triangle({Vector3{343.f, 332.f, 554.f}, Vector3{213.f, 332.f, 554.f}, Vector3{213.f, 227.f, 554.f}},
@@ -127,11 +127,11 @@ void InitialScene(World &world) {
 //                    true, HittableType::kLight)));
 //    world.Add(new Triangle({Vector3{-2.f, 2.f, 6.f}, Vector3{-2.f, -2.f, 6.f}, Vector3{2.f, 0.f, 6.f}}, m_emissive, HittableAttrib(
 //                    true, HittableType::kLight)));
-    auto *bunny = new TriMesh("../Model/bunny.obj", m_glass);
-    bunny->RotateAround({275.5f,275.5f,0.f},{1.f,0.f,0.f},90.f);
-    bunny->MoveBy({1.f,1.f,0.f},150.f);
-    bunny->MoveBy({0.f,1.f,0.f},200.f);
-    world.Add(bunny);
+//    auto *bunny = new TriMesh("../Model/bunny.obj", m_glass);
+//    bunny->RotateAround({275.5f,275.5f,0.f},{1.f,0.f,0.f},90.f);
+//    bunny->MoveBy({1.f,1.f,0.f},150.f);
+//    bunny->MoveBy({0.f,1.f,0.f},200.f);
+//    world.Add(bunny);
 //    for (int i = 50; i >= 1; --i) {
 //        float offset = RandomUtil::GetUniformFloat(-300.f, 200.f);
 //        world.Add(new Triangle({Vector3{313.f + offset, 227.f + offset, 454.f + offset},

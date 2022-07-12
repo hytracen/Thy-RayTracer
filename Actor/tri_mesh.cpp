@@ -42,7 +42,7 @@ void TriMesh::RotateAround(Vector3 p, Vector3 dir, float angle) {
     for (auto tri : triangles_) {
         tri->RotateAround(p,dir,angle);
     }
-    // todo:轴心旋转
+    pivot_.PointRotateAroundAxis(p, dir, angle);
 }
 
 void TriMesh::MoveBy(Vector3 dir, float dis) {

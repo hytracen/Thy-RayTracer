@@ -10,9 +10,12 @@
 
 void World::Add(Hittable *hittable) {
     switch (hittable->hittable_attrib_.type_) {
-        case HittableType::kLight:
-            light_list_.push_back(hittable);
+        case HittableType::kLight: {
+            auto* light = dynamic_cast<Light *>(hittable);
+            if (light)
+                light_list_.push_back(light);
             break;
+        }
         case HittableType::kNormal:
         case HittableType::kNoTri:
             break;
@@ -52,12 +55,10 @@ Vector3 World::Shade(const Ray &in_ray, int depth) {
                     if (!light->hittable_attrib_.is_2sided_ &&
                         hit_rec.normal.Dot(light->GetNormalAt(in_ray, {})) > 0.f)
                         continue;
-                    float x = RandomUtil::GetUniformFloat(213.f, 343.f);
-                    float y = RandomUtil::GetUniformFloat(227.f, 332.f);
-                    float z = 554.f;
-                    float dis = GetDistanceBetween2Points({x, y, z}, hit_rec.hit_pos);
-                    // todo: 根据光源的位置和形状进行采样
-                    Ray ray2light{hit_rec.hit_pos, (Vector3{x, y, z} - hit_rec.hit_pos).Normalize()};
+
+                    Vector3 s_p = light->SamplePoint();
+                    float dis = GetDistanceBetween2Points(s_p, hit_rec.hit_pos);
+                    Ray ray2light{hit_rec.hit_pos, (s_p - hit_rec.hit_pos).Normalize()};
                     HitRec light_hit_rec;
 #ifdef NotBVH
                     CastRay(ray2light, light_hit_rec, hittable_list_);

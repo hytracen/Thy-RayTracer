@@ -35,3 +35,13 @@ Vector3 Box::GetNormalAt(const Ray &in_ray, const Vector3 &point) {
 std::vector<Triangle *> Box::GetTriList() {
     return triangles_;
 }
+
+void Box::RotateAround(Vector3 p, Vector3 dir, float angle) {
+    for (auto tri : triangles_) {
+        tri->RotateAround(p,dir,angle);
+    }
+}
+
+void Box::MoveBy(Vector3 dir, float dis) {
+    Hittable::MoveBy(dir, dis);
+}

@@ -8,9 +8,9 @@
 #include <vector>
 #include <cassert>
 
-#include "Geometry/triangle.h"
-#include "Utils/OBJ_Loader.h"
-#include "bvh_tree.h"
+#include "../Geometry/triangle.h"
+#include "../Utils/OBJ_Loader.h"
+#include "../bvh_tree.h"
 
 class TriMesh : public Hittable {
 public:

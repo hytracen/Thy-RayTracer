@@ -62,6 +62,17 @@ float CosThetaOf2Vec(const Vector3 &v1, const Vector3 &v2) {
     return v1.Dot(v2) / (v1.Length() * v2.Length());
 }
 
+void Vector3::PointRotateAroundAxis(const Vector3 &p, const Vector3 &dir, float angle) {
+    *this = *this - p;
+    VectorRotateAroundAxis(p, dir, angle);
+    *this = *this + p;
+}
+
+void Vector3::VectorRotateAroundAxis(const Vector3 &p, const Vector3 &dir, float angle) {
+    float radian = angle / 180.f * (float)M_PI;
+    *this = *this * cosf(radian) + dir.Cross(*this) * sinf(radian) + dir * dir.Dot(*this) * (1 - cosf(radian));
+}
+
 Vector3 LocalToWorld(Vector3 v_loc, Vector3 w) {
     Vector3 a;
     if (1.f - fabsf(CosThetaOf2Vec(w, {1.f, 0.f, 0.f})) <= 0.1f) { // 和x轴几乎重合

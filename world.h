@@ -13,6 +13,7 @@
 #include "Utils/constant_value.h"
 #include "Geometry/triangle.h"
 #include "bvh_tree.h"
+#include "Actor/light.h"
 
 class World {
 public:
@@ -28,7 +29,7 @@ public:
 
 private:
     std::vector<Hittable*> hittable_list_;
-    std::vector<Hittable*> light_list_;
+    std::vector<Light*> light_list_;
     std::vector<Triangle*> tri_list_;
     BvhTree* bvh_tree_;
 };

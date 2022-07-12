@@ -13,7 +13,7 @@
 
 class Triangle;
 
-// todo: Hittable和Geometry分开
+// todo:Hittable和Geometry分开
 class Hittable {
 public:
     virtual bool Hit(const Ray &in_ray, HitRec& hit_rec) = 0;
